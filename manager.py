@@ -2,7 +2,7 @@
 from app import create_app
 from app.extensions._db import db
 from app.models.users import UsersModel
-from app.models.role import RoleModel
+from app.models.roles import RolesModel
 
 app = create_app()
 

@@ -13,7 +13,10 @@ def register():
 
     if request.method == 'POST':
         username = request.form['username']
+        full_name = request.form['full_name']
+        email = request.form['email']
         password = request.form['password']
+        role_id = 'user'
         db = get_db()
         error = None
 
