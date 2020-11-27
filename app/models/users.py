@@ -8,7 +8,7 @@ class UsersModel(db.Model):
     full_name = db.Column(db.String(128), unique=True, nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(512),nullable=False)
-    role_id = db.Column(db.String(24), unique=True, nullable=False)
+    #userrole = relationship('UserRolesModel', backref='user', lazy=True)
 
     def __repr(self):
         return f"<Users {self.full_name}>"
