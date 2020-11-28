@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from passlib.hash import pbkdf2_sha256
 
 from app.forms.registers import RegisterForm
 from app.forms.login import LoginForm
@@ -30,7 +31,7 @@ def register():
         
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('auth.index'))
+        return redirect(url_for('auth.login'))
 
     return render_template('auths/register.html', form=form)
 
