@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, PasswordField, SubmitField, validators, ValidationError
 from app.models.users import UsersModel
+#from flask_bcrypt import Bcrypt
+from passlib.hash import pbkdf2_sha256
 
 def invalid_credentials(form, field):
     #username and password checker
@@ -9,9 +11,10 @@ def invalid_credentials(form, field):
 
     #check username is valid
     user_object = UsersModel.query.filter_by(username=username_entered).first()
+    
     if user_object is None: #jika username tidak ada
         raise ValidationError('Username or Password is incorect.')
-    elif password_entered != user_object.password: #not pbkdf2_sha256.verify(password_entered, user_object.password):#password_entered != user_object.password:
+    elif not pbkdf2_sha256.verify(password_entered, user_object.password):
         raise ValidationError('Username or Password is incorect.')
 
 

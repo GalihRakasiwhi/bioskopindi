@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, PasswordField, SubmitField, validators
 
-
 class RegisterForm(FlaskForm):
     username = StringField('Username', [
         validators.Length(min=4, max=25, message='Username must be between 4 and 25 charachter.'), 

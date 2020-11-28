@@ -6,15 +6,10 @@ from app.forms.login import LoginForm
 from app.models.users import UsersModel
 from app.extensions._db import db
 
-#from app import db
 
 bp = Blueprint  ('auth', __name__)
 
-#login = LoginManager()
-#login.init_app(bp)
-
 @bp.route('/')
-#@bp.route('/index')
 def index():
     return 'Home Page'
 
@@ -22,12 +17,17 @@ def index():
 def register():
     form = RegisterForm()
     if request.method == 'POST':
+        password = form.password.data
+        #hash Password
+        hashed_password = pbkdf2_sha256.hash(password)
+
         user = UsersModel(
             username = request.form['username'],
             full_name = request.form['full_name'],
             email = request.form['email'],
-            password = request.form['password']
-            )
+            password = hashed_password #request.form['password']
+        )
+        
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('auth.index'))
@@ -47,8 +47,11 @@ def login():
     return render_template('auths/login.html', form=form)
 
 @bp.route('/chat', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def chat():
+    if not current_user.is_authenticated:
+    	flash('Please login!', 'danger')
+    	return redirect(url_for('auth.login'))
     return 'Chat Room'
 
 @bp.route('/logout', methods=['Get'])
