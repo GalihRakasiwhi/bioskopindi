@@ -10,7 +10,8 @@ def invalid_credentials(form, field):
 
     #check username is valid
     user_object = UsersModel.query.filter_by(username=username_entered).first()
-    
+    user_login = user_object.username
+    return user_object.username
     if user_object is None: #jika username tidak ada
         raise ValidationError('Username or Password is incorect.')
     elif not pbkdf2_sha256.verify(password_entered, user_object.password):

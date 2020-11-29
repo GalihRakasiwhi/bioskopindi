@@ -4,6 +4,7 @@ from passlib.hash import pbkdf2_sha256
 
 from app.forms.registers import RegisterForm
 from app.forms.login import LoginForm
+from app.forms.edit_account import EditAccountForm
 from app.models.users import UsersModel
 from app.extensions._db import db
 
@@ -12,7 +13,8 @@ bp = Blueprint  ('auth', __name__)
 
 @bp.route('/')
 def index():
-    return 'Home Page'
+    return render_template('index.html')
+    #return 'Home Page'
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -40,20 +42,44 @@ def login():
     form = LoginForm()
 
     #allow user to login if no validation error
-    if form.validate_on_submit():
+    if form.validate_on_submit():   
         user_object = UsersModel.query.filter_by(username=form.username.data).first()
         login_user(user_object)
+        #return user_object.username
         return redirect(url_for('auth.index'))
 
     return render_template('auths/login.html', form=form)
 
-@bp.route('/chat', methods=['GET', 'POST'])
+@bp.route('/account', methods=['GET', 'POST'])
 #@login_required
-def chat():
+def account():
     if not current_user.is_authenticated:
     	flash('Please login!', 'danger')
     	return redirect(url_for('auth.login'))
-    return 'Chat Room'
+
+    return render_template('account/account.html')
+
+@bp.route('/edit_account', methods=['GET', 'POST'])
+#@login_required
+def edit_account():
+    form = EditAccountForm()
+
+    if not current_user.is_authenticated:
+    	flash('Please login!', 'danger')
+    	return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        user_object = UsersModel.query.filter_by(username=current_user.username).first()
+        user_object.username = request.form['username'],
+        user_object.full_name = request.form['full_name'],
+        user_object.email = request.form['email']
+
+        db.session.commit()
+        return redirect(url_for('auth.index'))
+    
+    return render_template('account/edit_account.html', form=form)
+
+
 
 @bp.route('/logout', methods=['Get'])
 def logout():

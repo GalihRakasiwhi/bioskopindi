@@ -1,0 +1,23 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Profile - {{ current_user.username }}{% endblock %}
+{% block content %}
+<h2>Profile</h2>
+<div>
+<table width="100%" border="0" cellspacing="5" cellpadding="10  ">
+    <tr>
+        <td width="15%">Username</td>
+        <td><strong>{{ current_user.username }}</strong></td>
+    </tr>
+    <tr>
+        <td width="15%">Full Name</td>
+        <td><strong>{{ current_user.full_name }}</strong></td>
+    </tr>
+    <tr>
+        <td width="15%">Email</td>
+        <td><strong>{{ current_user.email }}</strong></td>
+    </tr>
+</table>
+<a href="{{ url_for('auth.edit_account') }}">Edit Profile</a>
+</div>
+{% endblock %}
