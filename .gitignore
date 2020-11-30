@@ -1,5 +1,6 @@
 start.sh
 migrate.sh
+config/
 
 venv/
 

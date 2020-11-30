@@ -5,6 +5,7 @@ from passlib.hash import pbkdf2_sha256
 from app.forms.registers import RegisterForm
 from app.forms.login import LoginForm
 from app.forms.edit_account import EditAccountForm
+from app.forms.add_movies import AddMoviesForm
 from app.models.users import UsersModel
 from app.extensions._db import db
 
@@ -15,6 +16,7 @@ bp = Blueprint  ('auth', __name__)
 def index():
     return render_template('index.html')
     #return 'Home Page'
+
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -37,6 +39,7 @@ def register():
 
     return render_template('auths/register.html', form=form)
 
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -50,6 +53,7 @@ def login():
 
     return render_template('auths/login.html', form=form)
 
+
 @bp.route('/account', methods=['GET', 'POST'])
 #@login_required
 def account():
@@ -58,6 +62,7 @@ def account():
     	return redirect(url_for('auth.login'))
 
     return render_template('account/account.html')
+
 
 @bp.route('/edit_account', methods=['GET', 'POST'])
 #@login_required
@@ -80,9 +85,24 @@ def edit_account():
     return render_template('account/edit_account.html', form=form)
 
 
-
 @bp.route('/logout', methods=['Get'])
 def logout():
 	logout_user()
 	flash('Logout succesfylly', 'success')
 	return redirect(url_for('auth.login'))
+
+
+@bp.route('/add_movies', methods=['GET', 'POST'])
+#@login_required
+def add_movies():
+    form = AddMoviesForm()
+
+    #allow user to login if no validation error
+    if form.validate_on_submit():   
+        img_dir = os.path.join(
+            os.path.dirname(app.instance_path), 'admin/img/poster'
+        )
+
+        return redirect(url_for('auth.index'))
+    #return 'Add Movie Page'
+    return render_template('admin/add_movies.html', form=form)
