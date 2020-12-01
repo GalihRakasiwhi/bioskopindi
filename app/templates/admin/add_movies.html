@@ -3,14 +3,14 @@
 {% block title %}Add Movie {% endblock %}
 {% block content %}
 <h2>Add Movie Form</h2>
-<form method="POST" enctype="multipart/form-data" action="/#">
+<form method="POST" enctype="multipart/form-data" action="/add_movies">
     <div>
         {{ form.movie_title.label }}
-        {{ displayField(form.movie_title, ' Movie Title', autocomplete='off', autofocus=true) }}
+        {{ displayField(form.movie_title, 'Movie Title', autocomplete='off', autofocus=true) }}
     </div>
     <div>
-        {{ form.movie_poster.label }}
-        {{ displayField(form.movie_poster, ' Movie Title', autocomplete='off', autofocus=true) }}
+        {{ form.movie_img_url.label }}<br/>
+        <input type="file" name="image"> 
     </div>
     <div>
         {{ form.movie_duration.label }}
@@ -18,14 +18,14 @@
     </div>
     <div>
         {{ form.movie_description.label }}
-        {{ displayField(form.movie_description, 'Description', autocomplete='off', autofocus=true) }}
+        {{ displayField(form.movie_description, 'Description') }}
     </div>
     <div>
-        {{ form.movie_on_show.label }}
-        {{ displayField(form.movie_on_show, 'Is Movie on Show?', autocomplete='off', autofocus=true) }}
+        {{ form.movie_onshow.label }}
+        {{ displayField(form.movie_onshow, 'Is Movie on Show?', autocomplete='off', autofocus=true) }}
     </div>
     <div>
-        {{ form.movie_on_show.label }}
+        {{ form.movie_upcoming.label }}
         {{ displayField(form.movie_upcoming, 'Is Movie Upcoming?', autocomplete='off', autofocus=true) }}
     </div>
     <div>
