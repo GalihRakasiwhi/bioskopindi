@@ -1,0 +1,37 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Detile {% endblock %}
+{% block content %}
+<h2>Movie on Show</h2>
+
+<div class="clearfix">
+    <img src="/{{ movies.movie_img_url }}" style="width: 260px;" class="float-left mr-3">
+    <table class="table" style="width: 70%;">
+        <tr>
+            <th>{{ form.movie_title.label }}</th>
+            <td>{{ movies.movie_title }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.movie_duration.label }}</th>
+            <td>{{ duration }}</td>
+        </tr>
+        <tr>
+            <th>On Show?</th>
+            {% if movies.movie_onshow %}
+             <td>Yes</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Relase Date</th>
+            <td>{{ movies.movie_released }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.movie_description.label }}</th>
+            <td>{{ movies.movie_description }}</td>
+        </tr>
+
+    </table>
+  </div>
+{% endblock %}

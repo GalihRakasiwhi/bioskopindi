@@ -1,35 +1,43 @@
 {% from 'auths/form_helper.html' import displayField %}
 {% extends 'base.html' %}
 {% block title %}Add Movie {% endblock %}
+{% block head %}
+{{ super() }}
+  <link type="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
 {% block content %}
 <h2>Add Movie Form</h2>
 <form method="POST" enctype="multipart/form-data" action="/add_movies">
     <div>
-        {{ form.movie_title.label }}
+        {{ form.movie_title.label }} *
         {{ displayField(form.movie_title, 'Movie Title', autocomplete='off', autofocus=true) }}
     </div>
-    <div>
-        {{ form.movie_img_url.label }}<br/>
-        <input type="file" name="image"> 
+    <div class="form-row">
+        <div class="cow">
+            {{ form.movie_img_url.label }}<br/>
+            <input type="file" name="image">
+        </div>
+        <div class="cow">
+            {{ form.movie_duration.label }} (menit) *
+            {{ displayField(form.movie_duration, 'Movie Duration', autocomplete='off', autofocus=true) }}
+        </div>
     </div>
     <div>
-        {{ form.movie_duration.label }}
-        {{ displayField(form.movie_duration, 'Movie Duration', autocomplete='off', autofocus=true) }}
-    </div>
-    <div>
-        {{ form.movie_description.label }}
+        {{ form.movie_description.label }} *
         {{ displayField(form.movie_description, 'Description') }}
     </div>
-    <div>
-        {{ form.movie_onshow.label }}
-        {{ displayField(form.movie_onshow, 'Is Movie on Show?', autocomplete='off', autofocus=true) }}
+    <div class="form-row">
+        <div class="col">
+            {{ form.movie_onshow.label }} *
+            {{ displayField(form.movie_onshow, 'Is Movie on Show?', autocomplete='off', autofocus=true) }}  
+        </div>
+        <div class="col">
+            {{ form.movie_upcoming.label }} *
+            {{ displayField(form.movie_upcoming, 'Is Movie Upcoming?', autocomplete='off', autofocus=true) }}
+        </div>
     </div>
     <div>
-        {{ form.movie_upcoming.label }}
-        {{ displayField(form.movie_upcoming, 'Is Movie Upcoming?', autocomplete='off', autofocus=true) }}
-    </div>
-    <div>
-        {{ form.movie_released.label }}
+        {{ form.movie_released.label }} *
         {{ displayField(form.movie_released, 'Released Date', autocomplete='off', autofocus=true) }}
     </div>
     <div>{{ form.submit_button }}</div>

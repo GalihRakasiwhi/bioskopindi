@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (
-    DateField, DateTimeField, Form, StringField, PasswordField, SubmitField, 
+    DateField, DateTimeField, Form,IntegerField, StringField, PasswordField, SubmitField, 
     TextField, FileField, SelectField, TextAreaField, validators
 )
 from flask_wtf.file import FileField, FileAllowed, FileRequired
@@ -18,8 +18,7 @@ class AddMoviesForm(FlaskForm):
     movie_img_url = FileField('Poster Image', validators=[
         FileAllowed(['jpg', 'png'], 'Images only!')
         ])
-    movie_duration = StringField('Duration', [
-        validators.Length(min=4, max=128, message='Name must be between 1 and 128 charachter.'),
+    movie_duration = IntegerField('Duration', [
         validators.InputRequired(message='Duration Required')
         ])
     movie_description = TextAreaField('Description', [
@@ -27,7 +26,7 @@ class AddMoviesForm(FlaskForm):
         ])
     movie_onshow = SelectField(u'is Movie on Show?', choices=[('no'), ('yes')])
     movie_upcoming = SelectField(u'is Movie Upcoming?', choices=[('no'), ('yes')])
-    movie_released = DateField('Released (dd-mm-yyyy)', validators=(validators.Optional(),))
+    movie_released = DateField('Released (yyyy-mm-dd)', format='%Y-%m-%d', validators=(validators.Optional(),))
     movie_added = DateTimeField('Movie Added', default=datetime.today())
 
     submit_button = SubmitField('Create')

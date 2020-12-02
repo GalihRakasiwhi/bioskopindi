@@ -6,6 +6,7 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
+from app.views.movies import detile
 from app.models.users import UsersModel
 from app.models.movies import MovieModel
 from app.extensions._db import db
