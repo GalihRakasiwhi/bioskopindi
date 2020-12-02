@@ -23,7 +23,13 @@ def create_app():
     setup_db(app)
 
     # view
+    from app.views.index import bp as index
+    app.register_blueprint(index)
+
     from app.views.auths import bp as auth
     app.register_blueprint(auth)
+
+    from app.views.movies import bp as movie
+    app.register_blueprint(movie)
 
     return app

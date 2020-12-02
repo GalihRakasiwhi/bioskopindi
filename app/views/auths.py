@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
 
+from app.views.index import index
 from app.forms.registers import RegisterForm
 from app.forms.login import LoginForm
 from app.forms.edit_account import EditAccountForm
@@ -17,10 +18,6 @@ from app.extensions._db import db
 
 bp = Blueprint  ('auth', __name__)
 
-@bp.route('/')
-def index():
-    return render_template('index.html')
-    #return 'Home Page'
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -53,8 +50,9 @@ def login():
     if form.validate_on_submit():   
         user_object = UsersModel.query.filter_by(username=form.username.data).first()
         login_user(user_object)
+        flash('Login succesfylly', 'success')
         #return user_object.username
-        return redirect(url_for('auth.index'))
+        return redirect(url_for('index.index'))
 
     return render_template('auths/login.html', form=form)
 
@@ -96,82 +94,6 @@ def logout():
 	flash('Logout succesfylly', 'success')
 	return redirect(url_for('auth.login'))
 
-
-@bp.route('/add_movies', methods=['GET', 'POST'])
-#@login_required
-def add_movies():
-    form = AddMoviesForm()
-
-    if request.method == 'POST':
-        dir_image="app/static/img/poster/"
-
-        if request.files:
-            image = request.files["image"]
-            if image.filename == "":
-                print('image must have filename')
-                return redirect(request.url)
-            
-            if not allowed_image(image.filename):
-                print("That image extension is not allowed")
-                return redirect(request.url)
-            else:
-                filename = "poster_%s" % secure_filename(image.filename)
-
-            image.save(os.path.join(dir_image, filename))
-            print('image-saved')
-
-        is_onshow = False
-        is_upcoming = False
-        if request.form['movie_onshow'] == 'yes':
-            is_onshow = True
-
-        if request.form['movie_upcoming'] == 'yes':
-            is_upcoming = True
-
-        movie = MovieModel(
-            movie_title = request.form['movie_title'],
-            movie_img_url = f"{dir_image}/{filename}",
-            movie_duration = request.form['movie_duration'],
-            movie_description = request.form['movie_description'],
-            movie_onshow = is_onshow,
-            movie_upcoming = is_upcoming,
-            movie_released = request.form['movie_released'],
-            movie_added = datetime.today()
-        )
-        
-        db.session.add(movie)
-        db.session.commit()
-        
-        return redirect(url_for('auth.index'))
-    #return 'Add Movie Page'
-    return render_template('admin/add_movies.html', form=form)
-
-
-@bp.route('/upload', methods=['GET', 'POST'])
-#@login_required
-def upload():
-    dir_image="app/static/img/poster"
-    if request.method == "POST":
-        if request.files:
-            print(request.cookies)
-            image = request.files["image"]
-            if image.filename == "":
-                print('image must have filename')
-                return redirect(request.url)
-            
-            if not allowed_image(image.filename):
-                print("That image extension is not allowed")
-                return redirect(request.url)
-            else:
-                filename = "poster_%s" % secure_filename(image.filename)
-
-            image.save(os.path.join(dir_image, filename))
-
-            print('image-saved')
-            print(f"{dir_image}/{filename}")
-            return redirect(request.url)
-
-    return render_template('upload.html')
 
 def allowed_image(filename):
     if not "." in filename:
