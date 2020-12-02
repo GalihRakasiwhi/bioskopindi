@@ -7,7 +7,7 @@ class MovieModel(db.Model):
     movie_title = db.Column(db.String(128), nullable=False)
     movie_img_url = db.Column(db.String(255))
     #movie_country = db.Column(db.String(64))
-    movie_duration = db.Column(db.String(24))
+    movie_duration = db.Column(db.Integer())
     #movie_genre = db.Column(db.String(128))
     movie_description = db.Column(db.Text)
     movie_onshow = db.Column(db.Boolean, nullable=True)

@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, session
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from passlib.hash import pbkdf2_sha256
 from werkzeug.utils import secure_filename
@@ -42,6 +42,9 @@ def upload():
 #@login_required
 def add_movies():
     form = AddMoviesForm()
+    if not current_user.is_authenticated:
+    	flash('Please login!', 'danger')
+    	return redirect(url_for('auth.login'))
 
     if request.method == 'POST':
         dir_image="static/img/poster/"
@@ -85,3 +88,27 @@ def add_movies():
         
         return redirect(url_for('index.index'))
     return render_template('admin/add_movies.html', form=form)
+
+@bp.route('/detile/<id>', methods=['GET', 'POST'])
+#@login_required
+def detile(id):
+    form = AddMoviesForm()
+    movies = MovieModel.query.get(id)
+    duration = m_to_h(int(movies.movie_duration))
+    print("mantap mantap mantap")
+    print(movies.movie_title)
+    return render_template('detile.html', movies=movies, form=form, duration=duration)
+
+def m_to_h(minute):
+	if minute <= 60:
+		print("%d menit" % minute)
+	elif minute > 60:
+		print(minute/60)
+		x = str(minute/60)
+		x = x.split('.')
+		print(x)
+		if minute % 60 != 0:
+			y = str(minute % 60)
+			return f"{x[0]} Jam {y} Menit"
+		else:
+			return f"{x[0]} Jam"

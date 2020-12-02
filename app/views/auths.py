@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
 
-from app.views.index import index
 from app.forms.registers import RegisterForm
 from app.forms.login import LoginForm
 from app.forms.edit_account import EditAccountForm

@@ -4,7 +4,7 @@
 <nav>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
       <!-- Brand -->
-      <a class="navbar-brand" href="#">Logo</a> 
+      <a class="navbar-brand" href="/">Logo</a> 
     <ul class="navbar-nav">
         {% if current_user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('movie.add_movies') }}">Add Movie</a>
@@ -28,9 +28,14 @@
         {% block header %}{% endblock %}
     </header>
     {% for message in get_flashed_messages() %}
-        <div class="alert alert-info">{{ message }}</div>
+        <div class="alert alert-info" style="text-align: center;">{{ message }}</div>
     {% endfor %}
-    {% block content %}{% endblock %}
+    <body style="background:#eaecee;">
+        <div style="width: 90%; background: white; padding: 30px; 
+        margin-left: auto; margin-right: auto;">       
+            {% block content %}{% endblock %}
+        </div>
+    </body>
 </section>
     <!-- Optional JavaScript; choose one of the two! -->
 
