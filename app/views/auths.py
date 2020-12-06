@@ -6,10 +6,10 @@ from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
 
-from app.forms.registers import RegisterForm
-from app.forms.login import LoginForm
-from app.forms.edit_account import EditAccountForm
-from app.forms.add_movies import AddMoviesForm
+from app.forms.form_register import RegisterForm
+from app.forms.form_login import LoginForm
+from app.forms.form_edit_account import EditAccountForm
+from app.forms.form_movies import MoviesForm
 from app.models.users import UsersModel
 from app.models.movies import MovieModel
 from app.extensions._db import db
@@ -82,7 +82,7 @@ def edit_account():
         user_object.email = request.form['email']
 
         db.session.commit()
-        return redirect(url_for('auth.index'))
+        return redirect(url_for('auth.account'))
     
     return render_template('account/edit_account.html', form=form)
 
