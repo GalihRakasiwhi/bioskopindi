@@ -2,8 +2,9 @@
 {% extends 'base.html' %}
 {% block title %}Detile {% endblock %}
 {% block content %}
-<h2>Movie on Show</h2>
-
+<div class="text-right"><a href="/edit_movies/{{ movies.id }}" class="btn btn-secondary">Edit Movie</a>
+<a href="/delete_movies/{{ movies.id }}" class="btn btn-danger">Delete Movie</a></div>
+<h2>{{ movies.movie_title }}</h2>
 <div class="clearfix">
     <img src="/{{ movies.movie_img_url }}" style="width: 260px;" class="float-left mr-3">
     <table class="table" style="width: 70%;">
@@ -13,7 +14,7 @@
         </tr>
         <tr>
             <th>{{ form.movie_duration.label }}</th>
-            <td>{{ duration }}</td>
+            <td>{{ db_duration }}</td>
         </tr>
         <tr>
             <th>On Show?</th>
@@ -25,11 +26,11 @@
         </tr>
         <tr>
             <th>Relase Date</th>
-            <td>{{ movies.movie_released }}</td>
+            <td>{{ db_date_release[0] }}</td>
         </tr>
         <tr>
             <th>{{ form.movie_description.label }}</th>
-            <td>{{ movies.movie_description }}</td>
+            <td>{{ movies.movie_description|safe }}</td>
         </tr>
 
     </table>
