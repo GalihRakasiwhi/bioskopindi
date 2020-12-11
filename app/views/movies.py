@@ -11,10 +11,11 @@ from werkzeug.utils import secure_filename
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
-from app.views.auths import allowed_image
 from app.forms.form_movies import MoviesForm
-from app.models.movies import MovieModel
+from app.models.model_movie import MovieModel
 from app.extensions._db import db
+from app.views.functions_plus import allowed_image, clean_tags, m_to_h
+
 
 bp = Blueprint  ('movie', __name__)
 
@@ -23,29 +24,17 @@ dir_image="static/img/poster/"
 dir_image_real="app/static/img/poster/"
 
 @bp.route('/upload', methods=['GET', 'POST'])
-#@login_required
-def upload():
-    if request.method == "POST":
-        if request.files:
-            print(request.cookies)
-            image = request.files["image"]
-            if image.filename == "":
-                print('image must have filename')
-                return redirect(request.url)
-            
-            if not allowed_image(image.filename):
-                print("That image extension is not allowed")
-                return redirect(request.url)
-            else:
-                filename = "poster_%s" % secure_filename(image.filename)
 
-            image.save(os.path.join(dir_image, filename))
+@bp.route('/movies', methods=['GET', 'POST'])
+def movies():
+    #set auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
 
-            print('image-saved')
-            print(f"{dir_image}/{filename}")
-            return redirect(request.url)
+    movies = MovieModel.query.all()
 
-    return render_template('upload.html')
+    return render_template('admin/movies/movies.html', movies=movies)
 
 #add Movies ---
 @bp.route('/add_movies', methods=['GET', 'POST'])
@@ -63,7 +52,7 @@ def add_movies():
             #req image
             image = request.files["image"]
             if image.filename == "":
-                flash('image must have filename', 'danger')
+                flash('must have upload image / image must have filename', 'danger')
                 return redirect(request.url)
             
             #chek allowed ext and set filename
@@ -105,14 +94,19 @@ def add_movies():
         db.session.commit()
         flash('Adding Movie Successfully', 'success')
 
-        return redirect(url_for('index.index'))
-    return render_template('admin/add_movies.html', form=form)
+        return redirect(url_for('movie.movies'))
+    return render_template('admin/movies/add_movies.html', form=form)
 
 
 #Edit Movies ---
 @bp.route('/edit_movies/<id>', methods=['GET', 'POST'])
 #@login_required
 def edit_movies(id):
+    #user auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+        
     form = MoviesForm()
     movies = MovieModel.query.get(id)
     #get value onshow
@@ -123,11 +117,6 @@ def edit_movies(id):
     is_upcoming = movies.movie_upcoming
 
     db_date_release = str(movies.movie_released).split()
-
-    #user auth
-    if not current_user.is_authenticated:
-    	flash('Please login!', 'danger')
-    	return redirect(url_for('auth.login'))
 
     if request.method == 'POST':
         if request.files:
@@ -172,13 +161,14 @@ def edit_movies(id):
         movies.movie_duration = request.form['movie_duration']
         movies.movie_description = cleaned_desc
         movies.movie_released = request.form['movie_released']
-        
+        movies.movie_edited = datetime.today()
+
         db.session.commit()
         flash('Edit Movie Successfully', 'success')
 
         return redirect(url_for('index.index'))
     return render_template(
-        'admin/edit_movies.html', db_date_release=db_date_release, 
+        'admin/movies/edit_movies.html', db_date_release=db_date_release, 
         form=form, is_onshow=is_onshow, is_upcoming=is_upcoming, 
         onshow_data=onshow_data, movies=movies, upcoming_data=upcoming_data
         )
@@ -220,34 +210,3 @@ def detile(id):
     db_duration = m_to_h(int(movies.movie_duration))
 
     return render_template('detile.html', movies=movies, form=form, db_date_release=db_date_release, db_duration=db_duration)
-
-#kumpulan Function
-def m_to_h(minute):
-	if minute <= 60:
-		return "%d menit" % minute
-	elif minute > 60:
-		#print(minute/60)
-		x = str(minute/60)
-		x = x.split('.')
-		#print(x)
-		if minute % 60 != 0:
-			y = str(minute % 60)
-			return f"{x[0]} Jam {y} Menit"
-		else:
-			return f"{x[0]} Jam"
-
-def clean_tags(text_tag):
-    cleaned_tags = bleach.clean(text_tag, 
-    tags=[
-        'a', 'abbr', 'acronym', 'b', 'br', 'blockquote', 'code', 'em', 
-        'font', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'ol', 'p',
-        'span', 'strong', 'style', 'u','ul'
-    ],
-    attributes=[{
-        'a': ['href', 'title'], 'abbr': ['title'], 'acronym': ['title'],
-    },'font', 'style'],
-    styles=['background-color', 'color', 'font-family', 'text-align', ],
-    protocols=['http', 'https', 'mailto'],
-    strip=False, strip_comments=True)
-
-    return cleaned_tags

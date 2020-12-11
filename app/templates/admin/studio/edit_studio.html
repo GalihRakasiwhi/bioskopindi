@@ -1,0 +1,33 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Edit Studio - {{ studio.studio_name }}{% endblock %}
+{% block head %}
+{{ super() }}
+
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+
+    <h2>Edit Studio Form</h2>
+    <form method="POST" action="/edit_studio/{{ studio.id }}">
+        <div class="form-row">
+            <div class="col">
+                {{ form.studio_name.label }} *
+                {{ displayField(form.studio_name, 'Studio Name', autocomplete='off', autofocus=true, value=studio.studio_name) }}
+            </div>
+            <div class="col">
+                {{ form.studio_capacity.label }} *
+                {{ displayField(form.studio_capacity, 'Studio Capacity', autocomplete='off', autofocus=true, value=studio.studio_capacity) }}
+            </div>
+        </div>
+        <div>
+            {{ form.studio_description.label }} *
+            <textarea class='form-control' id="summernote" name="studio_description">{{ studio.studio_description }}</textarea>
+        </div>
+
+        <div>{{ form.submit_button(value='Edit') }}</div>
+        {{ form.csrf_token }}
+    </form>
+    
+</div>
+{% endblock %}

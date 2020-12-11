@@ -1,0 +1,46 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Movies Page {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>Movies</h2>
+        <p>List of movies has been added:</p>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <div class="text-right"><a href="/add_movies" class="btn btn-primary">Add Movie</a>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Add/Edited</th>
+        <th>Who Added</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in movies  %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.movie_title }} ({{x.movie_added.strftime('%Y')}})</td>
+        <td>
+          {{ x.movie_added.strftime('%Y-%m-%d') }}<br>{% if x.movie_edited != None %}{{ x.movie_edited.strftime('%Y-%m-%d') }} {% else %}Never Edited{% endif %}
+        </td>
+        <td>Admin</td>
+        <td><a href="detile/{{ x.id }}">Detile</a> | <a href="edit_movies/{{ x.id }}">Edit</a> | <a href="/delete_movies/{{ x.id }}" onclick="return confirm('Are you sure to Delete movie &quot;{{ x.movie_title }}&quot; ?')">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}

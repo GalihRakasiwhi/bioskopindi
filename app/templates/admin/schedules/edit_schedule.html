@@ -1,0 +1,56 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}edit Movie {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+
+    <h2>Edit Schedule Form</h2>
+    <form method="POST" action="/edit_schedule/{{ schedule.id }}">
+        <p>
+        <div class="form-row">
+            <div class="col">
+                {{ form.schedule_movie_id.label }} *<br/>
+                <select class="form-control" name="schedule_movie_id">
+                    <option>Select...</option>
+                {% for x in movies %}
+                    {% if x.movie_onshow == True%}
+                    <option value="{{ x.id }}" {%if schedule.schedule_movie_id==x.id %} selected="selected" {% endif %}>{{ x.movie_title }} ({{ x.movie_added.strftime('%Y') }})</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                {{ form.schedule_studio_id.label }} *<br/>
+                <select class="form-control"  name="schedule_studio_id">
+                    <option>Select...</option>
+                {% for x in studio  %}
+                    <option value="{{ x.id }}" {% if schedule.schedule_studio_id==x.id %} selected="selected" {% endif %}>{{ x.studio_name }}</option>
+                {% endfor %}
+                </select>
+            </div>
+        </div>
+        </p>
+        <div class="form-row">
+            <div class="col">
+                {{ form.schedule_start_date.label }} *
+                {{ displayField(form.schedule_start_date, 'Start Date', autocomplete='off', autofocus=true, value=schedule.schedule_start_date) }}
+            </div>
+            <div class="col">
+                {{ form.schedule_end_date.label }} *
+                {{ displayField(form.schedule_end_date, 'End Date', autocomplete='off', autofocus=true, value=schedule.schedule_end_date) }}
+            </div>
+        </div>
+        <div>
+            {{ form.schedule_time.label }} *
+            {{ displayField(form.schedule_time, 'Time', autocomplete='off', autofocus=true, type='time', value=schedule.schedule_time) }}
+        </div>
+
+        <div>{{ form.submit_button(value='edit') }}</div>
+        {{ form.csrf_token }}
+    </form>
+    
+</div>
+{% endblock %}

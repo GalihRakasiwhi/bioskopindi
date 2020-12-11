@@ -1,0 +1,44 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Ticket Page {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>Ticket</h2>
+        <p>List of Ticket has been selled:</p>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <!-- <div class="text-right"><a href="/add_studio" class="btn btn-primary">Add Studio</a> -->
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Ticket User</th>
+        <th>Ticket Code</th>
+        <th>Ticket Schedule</th>
+        <th>Seat Number</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><a href="#">Edit</a> | <a href="#" onclick="return confirm('Are you sure to Delete Studio &quot;#&quot; ?')">Delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}

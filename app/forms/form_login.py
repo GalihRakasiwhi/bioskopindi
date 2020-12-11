@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, PasswordField, SubmitField, validators, ValidationError
-from app.models.users import UsersModel
+from app.models.model_users import UsersModel
 from passlib.hash import pbkdf2_sha256
 
 def invalid_credentials(form, field):

@@ -2,37 +2,51 @@
 {% extends 'base.html' %}
 {% block title %}Detile {% endblock %}
 {% block content %}
-<div class="text-right"><a href="/edit_movies/{{ movies.id }}" class="btn btn-secondary">Edit Movie</a>
-<a href="/delete_movies/{{ movies.id }}" class="btn btn-danger">Delete Movie</a></div>
-<h2>{{ movies.movie_title }}</h2>
-<div class="clearfix">
-    <img src="/{{ movies.movie_img_url }}" style="width: 260px;" class="float-left mr-3">
-    <table class="table" style="width: 70%;">
-        <tr>
-            <th>{{ form.movie_title.label }}</th>
-            <td>{{ movies.movie_title }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.movie_duration.label }}</th>
-            <td>{{ db_duration }}</td>
-        </tr>
-        <tr>
-            <th>On Show?</th>
-            {% if movies.movie_onshow %}
-             <td>Yes</td>
-            {% else %}
-            <td>No</td>
-            {% endif %}
-        </tr>
-        <tr>
-            <th>Relase Date</th>
-            <td>{{ db_date_release[0] }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.movie_description.label }}</th>
-            <td>{{ movies.movie_description|safe }}</td>
-        </tr>
 
-    </table>
-  </div>
+
+<div class="container-fluid">
+    <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>{{ movies.movie_title }} ({{movies.movie_added.strftime('%Y')}})</h2>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <div class="text-right"><a href="/edit_movies/{{ movies.id }}" class="btn btn-secondary">Edit Movie</a>
+        <a href="/delete_movies/{{ movies.id }}"  onclick="return confirm('Are you sure to Delete movie &quot;{{ movies.movie_title }}&quot; ?')" class="btn btn-danger">Delete Movie</a>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="clearfix">
+        <img src="/{{ movies.movie_img_url }}" style="width: 260px;" class="float-left mr-3">
+        <table class="table" style="width: 70%;">
+            <tr>
+                <th>{{ form.movie_title.label }}</th>
+                <td>{{ movies.movie_title }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.movie_duration.label }}</th>
+                <td>{{ db_duration }}</td>
+            </tr>
+            <tr>
+                <th>On Show?</th>
+                {% if movies.movie_onshow %}
+                 <td>Yes</td>
+                {% else %}
+                <td>No</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th>Relase Date</th>
+                <td>{{ db_date_release[0] }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.movie_description.label }}</th>
+                <td>{{ movies.movie_description|safe }}</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
 {% endblock %}
