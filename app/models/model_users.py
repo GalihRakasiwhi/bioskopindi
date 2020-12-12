@@ -8,7 +8,7 @@ class UsersModel(UserMixin, db.Model):
     full_name = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(512),nullable=False)
-    #userrole = relationship('UserRolesModel', backref='user', lazy=True)
+    user_ticket = db.relationship('TicketModel', backref='tblUsers', lazy=True)
 
     def __repr(self):
         return f"<Users {self.full_name}>"

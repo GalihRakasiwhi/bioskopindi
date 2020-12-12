@@ -1,9 +1,23 @@
 {% from 'auths/form_helper.html' import displayField %}
 {% extends 'base.html' %}
-{% block title %}Dashboard Page {% endblock %}
+{% block title %}Home Page {% endblock %}
 {% block content %}
 
 <div class="container-fluid">
+  <!-- konten -->
+  <div class="card-columns" style="padding-top: 10px;">
+    {% for x in movies  %}
+    <div class="card" style="max-width: 14rem;">
+      <img class="card-img-top" src="{{ x.movie_img_url }}" style="height: 300px;" alt="Card image">
+      <div class="card-body" style="height: 120px;">
+        <h6 class="card-title" style="text-align: center;">{{ x.movie_title }} ({{ x.movie_released.strftime('%Y') }})</h6>
+        <!--<p class="card-text">Some example text.</p>-->
+        <!--<div class="text-center"><a href="detile/{{ x.id }}" class="btn btn-primary">more detile</a></div>-->
+        <div class="text-center"><a href="buy_ticket/{{ x.id }}" class="btn btn-success">Buy Ticket</a> <a href="detile/{{ x.id }}" class="btn btn-primary">detile</a></div>
+      </div>
+    </div>
+    {% endfor%}
+  </div>  
 
   <div class="row">
     <div class="col-sm-6">

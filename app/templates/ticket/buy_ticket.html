@@ -1,0 +1,27 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Buy Ticket{% endblock %}
+{% block content %}
+<div class="container-fluid" style="width: 70%">
+	<h2>Buy Ticket Form</h2>
+	<p>Buy ticket for movie: {{ movies.movie_title }}</p>
+	<form method="POST" action="#">
+		<!-- check schedule -->
+		{% for x in schedule %}
+			{% if x.schedule_start_date <= x.schedule_end_date %}
+				{{ x.schedule_start_date }}<br/>
+				<!-- check time and movies-->
+				{% if x.schedule_movie_id == movies.id %}
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio{{x}}" value="option1">
+						<label class="form-check-label" for="inlineRadio{{x}}">{{ x.schedule_time.strftime('%H:%M %p') }}</label>
+					</div>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+		<div>{{ ticket_seat_number }}</div>
+	    <div>{{ form.submit_button }}</div>
+	    {{ form.csrf_token }}
+	</form>
+</div>
+{% endblock %}

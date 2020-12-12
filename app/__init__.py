@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
-from app.models.model_users_admin import UsersAdminModel
+from app.models.model_users import UsersModel
 
 def create_app():
     app = Flask(__name__)
@@ -13,7 +13,7 @@ def create_app():
     
     @login.user_loader
     def load_user(id):
-        return UsersAdminModel.query.get(int(id))
+        return UsersModel.query.get(int(id))
     
     # config
     app.config.from_object(os.environ['APP_CONFIG_FILE'])
