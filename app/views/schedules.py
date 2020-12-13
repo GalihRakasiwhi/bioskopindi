@@ -34,7 +34,7 @@ def schedule():
     #movies = MovieModel.query.filter_by(id=1).first()
     #print(movies.movie_schedule)
 
-    return render_template('admin/schedules/schedule.html', schedule=schedule)
+    return render_template('movies/schedule.html', schedule=schedule)
 
 
 #add schedule ---

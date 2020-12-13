@@ -22,19 +22,23 @@ from app.extensions._db import db
 bp = Blueprint  ('ticket', __name__)
 
 #ticket ---
-@bp.route('/ticket/', methods=['GET', 'POST'])
+@bp.route('/ticket/<id>', methods=['GET', 'POST'])
 #@login_required
-def ticket():
+def ticket(id):
     #set auth
     if not current_user.is_authenticated:
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
+    ticket = TicketModel.query.get(id)
+    ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel). \
+        select_from(TicketModel).filter_by(ticket_user=id). \
+        order_by(TicketModel.ticket_added.asc()). \
+        join(ScheduleModel). \
+        join(MovieModel). \
+        join(StudioModel).all()
 
-    ticket = TicketModel.query.all()
-
-    return render_template('ticket/buy_ticket.html')
-    #return render_template('admin/ticket/ticket.html', ticket=ticket)
+    return render_template('ticket/ticket.html', ticket=ticket)
 
 #buy ticket ---
 @bp.route('/buy_ticket/<id>', methods=['GET', 'POST'])
@@ -53,7 +57,10 @@ def buy_ticket(id):
     movies = MovieModel.query.get(id)
 
     schedule = db.session.query(ScheduleModel, MovieModel, StudioModel). \
-    select_from(ScheduleModel).order_by(ScheduleModel.schedule_date.asc()).join(MovieModel).filter_by(id=id).join(StudioModel).all()
+        select_from(ScheduleModel). \
+        order_by(ScheduleModel.schedule_date.asc()). \
+        join(MovieModel).filter_by(id=id). \
+        join(StudioModel).all()
     
     #schedule[0][1].movie_title
 

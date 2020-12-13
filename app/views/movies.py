@@ -23,8 +23,6 @@ bp = Blueprint  ('movie', __name__)
 dir_image="static/img/poster/"
 dir_image_real="app/static/img/poster/"
 
-@bp.route('/upload', methods=['GET', 'POST'])
-
 @bp.route('/movies', methods=['GET', 'POST'])
 def movies():
     #set auth
@@ -34,7 +32,7 @@ def movies():
 
     movies = MovieModel.query.all()
 
-    return render_template('admin/movies/movies.html', movies=movies)
+    return render_template('/movies/all_movies.html', movies=movies)
 
 
 @bp.route('/detile/<id>', methods=['GET', 'POST'])
@@ -45,4 +43,15 @@ def detile(id):
     db_date_release = str(movies.movie_released).split()
     db_duration = m_to_h(int(movies.movie_duration))
 
-    return render_template('detile.html', movies=movies, form=form, db_date_release=db_date_release, db_duration=db_duration)
+    return render_template('movies/movie_detile.html', movies=movies, form=form, db_date_release=db_date_release, db_duration=db_duration)
+
+@bp.route('/upcoming', methods=['GET', 'POST'])
+def upcoming():
+    #set auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+
+    movies = MovieModel.query.all()
+
+    return render_template('/movies/upcoming.html', movies=movies)

@@ -36,17 +36,13 @@
         </p>
         <div class="form-row">
             <div class="col">
-                {{ form.schedule_start_date.label }} *
-                {{ displayField(form.schedule_start_date, 'Start Date', autocomplete='off', autofocus=true) }}
+                {{ form.schedule_date.label }} *
+                {{ displayField(form.schedule_date, 'Start Date', autocomplete='off', autofocus=true) }}
             </div>
             <div class="col">
-                {{ form.schedule_end_date.label }} *
-                {{ displayField(form.schedule_end_date, 'End Date', autocomplete='off', autofocus=true) }}
+                {{ form.schedule_time.label }} *
+                {{ displayField(form.schedule_time, 'Time', autocomplete='off', autofocus=true, type='time', value='00:00') }}
             </div>
-        </div>
-        <div>
-            {{ form.schedule_time.label }} *
-            {{ displayField(form.schedule_time, 'Time', autocomplete='off', autofocus=true, type='time', value='00:00') }}
         </div>
 
         <div>{{ form.submit_button }}</div>

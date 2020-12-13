@@ -41,4 +41,7 @@ def create_app():
     from app.views.ticket import bp as ticket
     app.register_blueprint(ticket)
 
+    from app.views.message import bp as message
+    app.register_blueprint(message)
+
     return app

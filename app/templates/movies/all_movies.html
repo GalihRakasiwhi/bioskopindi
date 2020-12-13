@@ -7,17 +7,20 @@
   <!-- konten -->
   <div class="row" style="padding-top: 10px;">
     {% for x in movies  %}
-      {% if x.movie_onshow == True %}
-      <div class="card" style="max-width: 14rem; padding-left: 10px;">
+      <div class="card" style="max-width: 14rem; padding-left: 10px; padding-bottom: 10px">
         <img class="card-img-top" src="{{ x.movie_img_url }}" style="height: 300px;" alt="Card image">
         <div class="card-body" style="height: 120px;">
           <h6 class="card-title" style="text-align: center;">{{ x.movie_title }} ({{ x.movie_released.strftime('%Y') }})</h6>
           <!--<p class="card-text">Some example text.</p>-->
           <!--<div class="text-center"><a href="detile/{{ x.id }}" class="btn btn-primary">more detile</a></div>-->
-          <div class="text-center"><a href="buy_ticket/{{ x.id }}" class="btn btn-success">Buy Ticket</a> <a href="detile/{{ x.id }}" class="btn btn-primary">detile</a></div>
+          <div class="text-center">
+            {% if x.movie_onshow == True %}
+            <a href="buy_ticket/{{ x.id }}" class="btn btn-success">Buy Ticket</a>
+            {% endif %}
+            <a href="detile/{{ x.id }}" class="btn btn-primary">detile</a>
+          </div>
         </div>
       </div>
-      {% endif %}
     {% endfor%}
   </div>  
 

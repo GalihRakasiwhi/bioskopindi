@@ -1,0 +1,36 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Confirm Payment {% endblock %}
+{% block head %}
+{{ super() }}
+  <script>
+    $(document).ready(function() {
+        $('#summernote').summernote();
+    });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+
+    <h2>Confirm Form</h2>
+    <form method="POST" enctype="multipart/form-data" action="/confirm_payment/{{ id }}">
+        <div class="form-row">
+            <div class="col">
+            {{ form.message_type.label }} *
+            {{ displayField(form.message_type, 'Message Type', autocomplete='off', autofocus=true) }}
+            </div>
+            <div class="col">
+                {{ form.message_img_url.label }} *<br/>
+                <input type="file" name="image">
+            </div>
+        </div>
+        <div>
+            {{ form.message_text.label }} (optional)
+            <textarea class='form-control' id="summernote" name="message_text"></textarea>
+        </div>
+        <div>{{ form.submit_button }}</div>
+        {{ form.csrf_token }}
+    </form>
+    
+</div>
+{% endblock %}
