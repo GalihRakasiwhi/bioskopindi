@@ -1,0 +1,65 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Buy Ticket{% endblock %}
+{% block content %}
+<div class="container-fluid" style="width: 70%">
+	<h2>Buy Ticket Form</h2>
+	<p>Buy ticket for movie: {{ movies.movie_title }}</p>
+	<form method="POST" action="/buy_ticket/{{ movies.id }}">
+		<div style="padding-bottom: 10px;">
+		{% for x in schedule %}
+			<div class="card">
+			  <div class="card-body" style="padding-left: 30px;">
+				<input class="form-check-input" type="radio" name="ticket_schedule" value="{{ x[0].id }}" id="inlineRadio{{x}}">
+				<label class="form-check-label" for="inlineRadio{{x}}">{{x[0].schedule_date}} - {{x[0].schedule_time.strftime('%H:%M %p') }}</label>
+			  </div>
+			</div>
+		{% endfor %}
+
+
+
+
+
+		<!-- check schedule -->
+		{% for x in schedule %}
+			<!-- check time and movies-->
+			{% if x.schedule_movie_id == movies.id %}
+			<!--
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio{{x}}" value="option1">
+					<label class="form-check-label" for="inlineRadio{{x}}">{{ x.schedule_time.strftime('%H:%M %p') }}</label>
+				</div>
+			-->
+			<div class="card">
+			  <div class="card-body" style="padding-left: 30px;">
+				<input class="form-check-input" type="radio" name="ticket_schedule" value="{{ x.id }}" id="inlineRadio{{x}}">
+				<label class="form-check-label" for="inlineRadio{{x}}">{{x.schedule_date }} - {{ x.schedule_time.strftime('%H:%M %p') }}</label>
+			  </div>
+			</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		<div>
+			{{ form.ticket_seat_number.label('Seat Number') }} *<br/>
+			<input type="number" name="ticket_seat_number" placeholder="Seat Number">
+			<!--
+			<select class="select" name="ticket_seat_number">
+				<option></option>
+			</select>
+		-->
+		</div>
+	    <div>{{ form.submit_button }}</div>
+	    {{ form.csrf_token }}
+	</form>
+<!--
+<table class="table table-bordered" style="width: 50%; min-width: 50%; text-align: center; margin-left:auto;margin-right:auto;">
+	{% for x in range(8) %}
+	<tr>
+		{% for y in range(7) %}
+		<td id="{{ x }}"> {{ (y+(x*7))+1 }} </td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+-->
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Dashboard Page {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+  <div class="row" style="padding-top: 10px">
+
+    <div class="col-sm-6" style="max-width: 21rem;">
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title">Total Movies</h5>
+            <div class="form-row">
+                <div class="col">
+                  <h1>{{ movies|length }}</h1>
+                </div>
+                <div class="col">
+                  <p>Total Movie has been added</p>
+                </div>
+            </div>
+          <a href="movies" class="btn btn-primary">View Detile</a>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6" style="max-width: 21rem;">
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title">Total Users</h5>
+            <div class="form-row">
+                <div class="col">
+                  <h1>{{ users|length }}</h1>
+                </div>
+                <div class="col">
+                  <p>Total Users has been Registered</p>
+                </div>
+            </div>
+          <a href="#" class="btn btn-primary">View Detile</a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6" style="max-width: 21rem;">
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title">Total Studio</h5>
+            <div class="form-row">
+                <div class="col">
+                  <h1>{{ studio|length }}</h1>
+                </div>
+                <div class="col">
+                  <p>Total Users has been Added</p>
+                </div>
+            </div>
+          <a href="studio" class="btn btn-primary">View Detile</a>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- line 2 -->
+  <div class="row" style="max-width: 63rem; padding-top: 10px">
+
+    <div class="col-sm-6">
+      <div class="card text-white bg-danger mb-3">
+        <div class="card-body">
+
+          <h5 class="card-title">Total Ticket</h5>
+            <div class="form-row">
+                <div class="col">
+                  <h1>{{ ticket|length }}</h1>
+                </div>
+                <div class="col">
+                  <p>Total Ticket has been Selled<br/>&nbsp;</p>
+                </div>
+            </div>
+          <a href="ticket" class="btn btn-light">View Detile</a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+
+          <h5 class="card-title">Total Schedule</h5>
+            <div class="form-row">
+                <div class="col">
+                  <h1>{{ schedule|length }}</h1>
+                </div>
+                <div class="col">
+                  <p>Total Schedule has been Added</p>
+                </div>
+            </div>
+          <a href="schedule" class="btn btn-light">View Detile</a>
+
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+
+
+{% endblock %}

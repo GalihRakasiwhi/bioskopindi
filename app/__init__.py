@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
-from app.models.users import UsersModel
+from app.models.model_users import UsersModel
 
 def create_app():
     app = Flask(__name__)
@@ -31,5 +31,14 @@ def create_app():
 
     from app.views.movies import bp as movie
     app.register_blueprint(movie)
+
+    from app.views.schedules import bp as schedule
+    app.register_blueprint(schedule)
+
+    from app.views.studio import bp as studio
+    app.register_blueprint(studio)
+
+    from app.views.ticket import bp as ticket
+    app.register_blueprint(ticket)
 
     return app

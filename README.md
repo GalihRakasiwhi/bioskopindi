@@ -1,4 +1,4 @@
-# bioskopindi - Training Project
+# bioskopindi-Admin - Training Project
 
 Just training project, so go away.
 

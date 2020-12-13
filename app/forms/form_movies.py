@@ -26,4 +26,4 @@ class MoviesForm(FlaskForm):
     movie_released = DateField('Released', format='%Y-%m-%d', validators=(validators.Optional(),))
     movie_added = DateTimeField('Movie Added', default=datetime.today())
     
-    submit_button = SubmitField('Create')
+    submit_button = SubmitField('Add')

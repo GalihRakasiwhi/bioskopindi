@@ -2,17 +2,45 @@
 {% extends 'base.html' %}
 {% block title %}Home Page {% endblock %}
 {% block content %}
-<h2>Movie on Show</h2>
-<div class="card-columns">
+
+<div class="container-fluid">
+  <!-- konten -->
+  <div class="card-columns" style="padding-top: 10px;">
     {% for x in movies  %}
-    <div class="card" style="width:200px; background-color:#fef9e7;">
-        <img class="card-img-top" src="{{ x.movie_img_url }}" style="height: 300px;" alt="Card image">
+    <div class="card" style="max-width: 14rem;">
+      <img class="card-img-top" src="{{ x.movie_img_url }}" style="height: 300px;" alt="Card image">
+      <div class="card-body" style="height: 120px;">
+        <h6 class="card-title" style="text-align: center;">{{ x.movie_title }} ({{ x.movie_released.strftime('%Y') }})</h6>
+        <!--<p class="card-text">Some example text.</p>-->
+        <!--<div class="text-center"><a href="detile/{{ x.id }}" class="btn btn-primary">more detile</a></div>-->
+        <div class="text-center"><a href="buy_ticket/{{ x.id }}" class="btn btn-success">Buy Ticket</a> <a href="detile/{{ x.id }}" class="btn btn-primary">detile</a></div>
+      </div>
+    </div>
+    {% endfor%}
+  </div>  
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
         <div class="card-body">
-          <h4 class="card-title" style="text-align: center;">{{ x.movie_title }}</h4>
-          <!--<p class="card-text">Some example text.</p>-->
-            <div class="text-center"><a href="detile/{{ x.id }}" class="btn btn-primary">more detile</a></div>
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
-    {% endfor%}
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+
 {% endblock %}

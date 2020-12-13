@@ -1,24 +1,26 @@
 {% from 'auths/form_helper.html' import displayField %}
 {% extends 'base.html' %}
-{% block title %}Registration {% endblock %}
+{% block title %}Registration{% endblock %}
 {% block content %}
-<h2>Register</h2>
-<form method="POST" action="/register">
-    <!--
-    <div>{{ form.username.label }} {{ form.username }}</div>
-    <div>{{ form.full_name.label }} {{ form.full_name }}</div>
-    <div>{{ form.email.label }} {{ form.email }}</div>
-    <div>{{ form.password.label }} {{ form.password }}</div>
-    <div>{{ form.confirm_password.label }} {{ form.confirm }}</div>
-    <div>{{ form.submit }}</div>
-    -->
-    {{ displayField(form.username, 'Username', autocomplete='off', autofocus=true) }}
-    {{ displayField(form.full_name, 'Full Name', autocomplete='off', autofocus=true) }}
-    {{ displayField(form.email, 'Email', autocomplete='off', autofocus=true) }}
-    {{ displayField(form.password, 'Password') }}
-    {{ displayField(form.confirm_password, 'Retype Password') }}
+<div class="container-fluid" style="width: 70%">
+    <h2>Register</h2>
+    <form method="POST" action="/register">
+        <!--
+        <div>{{ form.username.label }} {{ form.username }}</div>
+        <div>{{ form.full_name.label }} {{ form.full_name }}</div>
+        <div>{{ form.email.label }} {{ form.email }}</div>
+        <div>{{ form.password.label }} {{ form.password }}</div>
+        <div>{{ form.confirm_password.label }} {{ form.confirm }}</div>
+        <div>{{ form.submit }}</div>
+        -->
+        {{ displayField(form.username, 'Username', autocomplete='off', autofocus=true) }}
+        {{ displayField(form.full_name, 'Full Name', autocomplete='off', autofocus=true) }}
+        {{ displayField(form.email, 'Email', autocomplete='off', autofocus=true, type='email') }}
+        {{ displayField(form.password, 'Password') }}
+        {{ displayField(form.confirm_password, 'Retype Password') }}
 
-    <div>{{ form.submit_button }}</div>
-    {{ form.csrf_token }}
-</form>
+        <div>{{ form.submit_button }}</div>
+        {{ form.csrf_token }}
+    </form>
+</div>
 {% endblock %}

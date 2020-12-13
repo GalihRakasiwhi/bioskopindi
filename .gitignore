@@ -1,7 +1,7 @@
 start.sh
 migrate.sh
 config/
-static/img/
+app/static/img/
 
 venv/
 

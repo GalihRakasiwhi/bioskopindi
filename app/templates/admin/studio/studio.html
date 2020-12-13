@@ -1,0 +1,44 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Studio Page {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>Studio</h2>
+        <p>List of Studio has been added:</p>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <div class="text-right"><a href="/add_studio" class="btn btn-primary">Add Studio</a>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Studio Name</th>
+        <th>Studio Capacity</th>
+        <th>Studio Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in studio %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.studio_name }}</td>
+        <td>{{ x.studio_capacity }}</td>
+        <td>{{ x. studio_description }}</td>
+        <td><a href="edit_studio/{{ x.id }}">Edit</a> | <a href="#" onclick="return confirm('Are you sure to Delete Studio &quot;{{ x.studio_name }}&quot; ?')">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}
