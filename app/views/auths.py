@@ -10,6 +10,9 @@ from app.forms.form_register import RegisterForm
 from app.forms.form_login import LoginForm
 from app.forms.form_edit_account import EditAccountForm
 from app.models.model_users import UsersModel
+from app.models.model_roles import RolesModel
+from app.models.model_users_roles import UsersRolesModel
+from app.models.model_message_to_system import MessageToSystemModel
 from app.extensions._db import db
 from app.views.functions_plus import allowed_image
 
@@ -23,8 +26,6 @@ def account():
     if not current_user.is_authenticated:
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
-
-    #user = UsersModel.query.filter_by(id=current_user.id).first()
 
     return render_template('account/account.html')
 

@@ -1,0 +1,42 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}My Ticket{% endblock %}
+{% block content %}
+<div class="container-fluid" style="width: 70%">
+	<h2>My Ticket</h2>
+	<p>List of Ticket has been bought:</p>
+	<table class="table table-striped">
+		<thead>
+		  <tr>
+		    <th>Id</th>
+		    <th>Movie</th>
+		    <th>Schedule</th>
+		    <th>Time</th>
+		    <th>Studio</th>
+		    <th>Seat Number</th>
+		    <th>Payment</th>
+		    <th>Status</th>
+		    <th>Added</th>
+		    <th>Action</th>
+		  </tr>
+		</thead>
+		<tbody>
+		{% for x in ticket %}
+		  <tr>
+		    <td>{{ x[0].id }}</td>
+		    <td>{{ x[2].movie_title }}</td>
+		    <td>{{ x[1].schedule_date }}</td>
+		    <td>{{ x[1].schedule_time }}</td>
+		    <td>{{ x[1].schedule_studio_id }}</td>
+		    <td>{{ x[0].ticket_seat_number }}</td>
+		    <td>{{ x[0].ticket_payment }}</td>
+		    <td>{{ x[0].ticket_status }}</td>
+		    <td>{{ x[0].ticket_added.strftime('%Y-%m-%d\n%H:%M %p') }}</td>
+		    <td><a href="/confirm_payment/{{ x[0].id }}">Confirm</a> | <a href="#">Cancel</a></td>
+		  </tr>
+		 {% endfor %}
+		</tbody>
+	</table>
+
+</div>
+{% endblock %}

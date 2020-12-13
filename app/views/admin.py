@@ -11,22 +11,30 @@ from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
 from app.models.model_users_admin import UsersAdminModel
+from app.models.model_roles import RolesModel
+from app.models.model_users_roles import UsersRolesModel
+from app.models.model_message_to_system import MessageToSystemModel
+
 from app.extensions._db import db
 
-bp = Blueprint  ('index', __name__)
+bp = Blueprint  ('admin', __name__)
 
-@bp.route('/')
+@bp.route('/admin/')
 def index():
 
-    movies = MovieModel.query.all()
-
-    return render_template('/movies/now_playing.html', movies=movies)
-
-@bp.route('/test')
-def test():
     #set auth
     if not current_user.is_authenticated:
     	flash('Please login!', 'danger')
     	return redirect(url_for('auth.login'))
-    	
+
+    movies = MovieModel.query.all()
+    studio = StudioModel.query.all()
+    schedule = ScheduleModel.query.all()
+    ticket = TicketModel.query.all()
+    users = UsersModel.query.all()
+
+    return render_template('admin/index.html', movies=movies, studio=studio, schedule=schedule, ticket=ticket, users=users)
+
+@bp.route('/test')
+def test():
     return render_template('test.html')
