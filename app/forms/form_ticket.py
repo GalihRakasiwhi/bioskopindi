@@ -12,5 +12,7 @@ class TicketForm(FlaskForm):
         ])
     ticket_schedule = IntegerField('Ticket Schedule')
     ticket_seat_number = IntegerField('Ticket Schedule')
-    #ticket_buy_date = DateField('Released', format='%Y-%m-%d', validators=(validators.Optional(),))
+    ticket_payment = StringField('Ticket Payment')
+    ticket_status = StringField('Ticket Status')
+    ticket_added = DateField('Released', format='%Y-%m-%d')
     submit_button = SubmitField('buy')

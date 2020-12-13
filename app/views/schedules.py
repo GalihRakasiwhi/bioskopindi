@@ -55,8 +55,7 @@ def add_schedule():
         schedule = ScheduleModel(
             schedule_movie_id = request.form['schedule_movie_id'],
             schedule_studio_id = request.form['schedule_studio_id'],
-            schedule_start_date = request.form['schedule_start_date'],
-            schedule_end_date = request.form['schedule_end_date'],
+            schedule_date = request.form['schedule_date'],
             schedule_time = request.form['schedule_time'],
             schedule_added = datetime.today()
         )
@@ -86,8 +85,7 @@ def edit_schedule(id):
     if request.method == 'POST':
         schedule.schedule_movie_id = request.form['schedule_movie_id'],
         schedule.schedule_studio_id = request.form['schedule_studio_id'],
-        schedule.schedule_start_date = request.form['schedule_start_date'],
-        schedule.schedule_end_date = request.form['schedule_end_date'],
+        schedule.schedule_date = request.form['schedule_date'],
         schedule.schedule_time = request.form['schedule_time'],
     
         db.session.commit()

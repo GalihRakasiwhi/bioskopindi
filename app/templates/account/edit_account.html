@@ -2,14 +2,16 @@
 {% extends 'base.html' %}
 {% block title %}Edit Account - {{ current_user.username }} {% endblock %}
 {% block content %}
-<h2>Edit Account - {{ current_user.username }}</h2>
-<form method="POST" action="/edit_account">
-    
-    {{ displayField(form.username, 'Username', value=current_user.username, autocomplete='off', autofocus=true) }}
-    {{ displayField(form.full_name, 'Full Name', value=current_user.full_name, autocomplete='off', autofocus=true) }}
-    {{ displayField(form.email, 'Email', value=current_user.email, autocomplete='off' , autofocus=true) }}
+<div class="container-fluid">
+	<h2>Edit Account - {{ current_user.username }}</h2>
+	<form method="POST" action="/edit_account">
+	    
+	    {{ displayField(form.username, 'Username', value=current_user.username, autocomplete='off', autofocus=true) }}
+	    {{ displayField(form.full_name, 'Full Name', value=current_user.full_name, autocomplete='off', autofocus=true) }}
+	    {{ displayField(form.email, 'Email', value=current_user.email, autocomplete='off' , autofocus=true) }}
 
-    <div>{{ form.submit_button }}</div>
-    {{ form.csrf_token }}
-</form>
+	    <div>{{ form.submit_button }}</div>
+	    {{ form.csrf_token }}
+	</form>
+</div>
 {% endblock %}

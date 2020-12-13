@@ -10,8 +10,7 @@ class ScheduleForm(FlaskForm):
     schedule_studio_id = IntegerField('Studio Name', [ 
         validators.InputRequired(message='Fill the field')
         ])
-    schedule_start_date = DateField('Start Date', format='%Y-%M-%D')
-    schedule_end_date = DateField('End Date', format='%Y-%M-%D')
+    schedule_date = DateField('Schedule Date', format='%Y-%M-%D')
     schedule_time = TimeField('Time', format='%H:%M')
     schedule_schedule_added = DateField('Released', format='%Y-%m-%d', validators=(validators.Optional(),))
     submit_button = SubmitField('Add')

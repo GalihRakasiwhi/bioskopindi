@@ -24,6 +24,8 @@ def account():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
+    #user = UsersModel.query.filter_by(id=current_user.id).first()
+
     return render_template('account/account.html')
 
 

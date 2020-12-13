@@ -28,5 +28,5 @@ def test():
     if not current_user.is_authenticated:
     	flash('Please login!', 'danger')
     	return redirect(url_for('auth.login'))
-
+    	
     return render_template('test.html')
