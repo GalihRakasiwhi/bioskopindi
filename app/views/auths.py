@@ -34,7 +34,7 @@ def account():
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate():
         password = form.password.data
         #hash Password
         hashed_password = pbkdf2_sha256.hash(password)
@@ -45,8 +45,17 @@ def register():
             email = request.form['email'],
             password = hashed_password #request.form['password']
         )
-        
         db.session.add(user)
+        db.session.commit()
+
+        user_object = db.session.query(UsersModel).order_by(UsersModel.id.desc()).first()
+        role_object = RolesModel.query.get(2)
+
+        user_role = UsersRolesModel(
+            user_id = user_object.id,
+            role_id = role_object.id
+        )
+        db.session.add(user_role)
         db.session.commit()
         return redirect(url_for('auth.login'))
 
@@ -97,3 +106,16 @@ def logout():
 	logout_user()
 	flash('Logout succesfylly', 'success')
 	return redirect(url_for('auth.login'))
+
+
+#test ---
+@bp.route('/test1', methods=['Get'])
+def test1():
+    user_object = db.session.query(UsersModel).order_by(UsersModel.id.desc()).first()
+    role_object = RolesModel.query.get(2)
+
+    #user_object = UsersModel.query.filter_by(id=1).first()
+
+
+    return render_template('test.html', user_object=user_object, role_object=role_object)
+

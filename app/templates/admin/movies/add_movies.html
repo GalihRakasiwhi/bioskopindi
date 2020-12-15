@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}Add Movie {% endblock %}
 {% block head %}
 {{ super() }}
@@ -13,7 +13,7 @@
 <div class="container-fluid">
 
     <h2>Add Movie Form</h2>
-    <form method="POST" enctype="multipart/form-data" action="/add_movies">
+    <form method="POST" enctype="multipart/form-data" action="{{url_for('admin_movies.add_movies')}}">
         <div>
             {{ form.movie_title.label }} *
             {{ displayField(form.movie_title, 'Movie Title', autocomplete='off', autofocus=true) }}

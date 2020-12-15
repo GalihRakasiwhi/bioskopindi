@@ -23,6 +23,30 @@ def create_app():
     setup_db(app)
 
     # view
+
+    # ---- view admin
+    from app.views.admin.admin_index import bp as admin
+    app.register_blueprint(admin)
+
+    from app.views.admin.admin_auth import bp as admin_auth
+    app.register_blueprint(admin_auth)
+
+    from app.views.admin.admin_movies import bp as admin_movies
+    app.register_blueprint(admin_movies)
+
+    from app.views.admin.admin_schedules import bp as admin_schedules
+    app.register_blueprint(admin_schedules)
+
+    from app.views.admin.admin_studio import bp as admin_studio
+    app.register_blueprint(admin_studio)
+
+    from app.views.admin.admin_ticket import bp as admin_ticket
+    app.register_blueprint(admin_ticket)
+
+
+
+
+    # ---- view user
     from app.views.index import bp as index
     app.register_blueprint(index)
 

@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}edit Movie {% endblock %}
 {% block head %}
 {{ super() }}
@@ -8,7 +8,7 @@
 <div class="container-fluid">
 
     <h2>Edit Schedule Form</h2>
-    <form method="POST" action="/edit_schedule/{{ schedule.id }}">
+    <form method="POST" action="{{url_for('admin_schedule.edit_schedule', id=schedule.id)}}">
         <p>
         <div class="form-row">
             <div class="col">
@@ -40,7 +40,7 @@
             </div>
             <div class="col">
                 {{ form.schedule_time.label }} *
-                {{ displayField(form.schedule_time, 'Time', autocomplete='off', autofocus=true, type='time', value=schedule.schedule_time) }}
+                {{ displayField(form.schedule_time, 'Time', autocomplete='off', autofocus=true, type='time', value=schedule.schedule_time.strftime('%H:%M')) }}
             </div>
         </div>
 

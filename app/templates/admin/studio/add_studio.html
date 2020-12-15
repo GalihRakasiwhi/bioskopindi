@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}Add Studio{% endblock %}
 {% block head %}
 {{ super() }}
@@ -9,7 +9,7 @@
 <div class="container-fluid">
 
     <h2>Add Studio Form</h2>
-    <form method="POST" action="/add_studio">
+    <form method="POST" action="{{url_for('admin_studio.add_studio')}}">
         <div class="form-row">
             <div class="col">
                 {{ form.studio_name.label }} *

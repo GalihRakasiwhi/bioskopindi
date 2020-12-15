@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
 from app.views.movies import detile
+from app.views.functions_plus import flash_login, flash_login_admin
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
@@ -22,10 +23,15 @@ bp = Blueprint  ('admin', __name__)
 @bp.route('/admin/')
 def index():
 
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-    	flash('Please login!', 'danger')
+    	flash_login()
     	return redirect(url_for('auth.login'))
+
+    #check is admin
+    if current_user.user_role[0].role_id != 1:
+        flash_login_admin()
+        return redirect(url_for('index.index'))
 
     movies = MovieModel.query.all()
     studio = StudioModel.query.all()
@@ -35,6 +41,4 @@ def index():
 
     return render_template('admin/index.html', movies=movies, studio=studio, schedule=schedule, ticket=ticket, users=users)
 
-@bp.route('/test')
-def test():
-    return render_template('test.html')
+    

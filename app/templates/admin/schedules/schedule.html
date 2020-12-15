@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}Schedule Page {% endblock %}
 {% block content %}
 
@@ -11,11 +11,11 @@
         <p>List of schedule has been added:</p>
       </div>
       <div class="col-sm col align-self-end" >
-        <div class="text-right"><a href="/add_schedule" class="btn btn-primary">Add Schedule</a>
+        <div class="text-right"><a href="{{url_for('admin_schedule.add_schedule')}}" class="btn btn-primary">Add Schedule</a>
       </div>
     </div>
   </div>
-
+  {% if schedule|length != 0 %}
   <table class="table table-striped">
     <thead>
       <tr>
@@ -40,6 +40,12 @@
       {% endfor %}
     </tbody>
   </table>
+
+  {% else %}
+  <div class="alert alert-secondary" role="alert" style="text-align: center;">
+    -- Schedule empty --
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}

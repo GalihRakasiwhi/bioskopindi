@@ -10,6 +10,7 @@ from datetime import date, datetime
 
 #kumpulan Function
 
+
 def allowed_image(filename):
     if not "." in filename:
         return False
@@ -25,6 +26,14 @@ def check_login():
     if not current_user.is_authenticated:
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
+
+#flash auth
+def flash_login():
+    return flash('Please login!', 'danger')
+
+def flash_login_admin():
+    return flash('You dont have permission', 'danger')
+
 
 #convert minute to hour
 def m_to_h(minute):
