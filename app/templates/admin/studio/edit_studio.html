@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}Edit Studio - {{ studio.studio_name }}{% endblock %}
 {% block head %}
 {{ super() }}
@@ -9,7 +9,7 @@
 <div class="container-fluid">
 
     <h2>Edit Studio Form</h2>
-    <form method="POST" action="/edit_studio/{{ studio.id }}">
+    <form method="POST" action="{{url_for('admin_studio.edit_studio', id=studio.id )}}">
         <div class="form-row">
             <div class="col">
                 {{ form.studio_name.label }} *
@@ -17,7 +17,7 @@
             </div>
             <div class="col">
                 {{ form.studio_capacity.label }} *
-                {{ displayField(form.studio_capacity, 'Studio Capacity', autocomplete='off', autofocus=true, value=studio.studio_capacity) }}
+                {{ displayField(form.studio_capacity, 'Studio Capacity', autocomplete='off', autofocus=true, type='number', value=studio.studio_capacity) }}
             </div>
         </div>
         <div>

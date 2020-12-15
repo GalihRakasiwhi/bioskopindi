@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}Movies Page {% endblock %}
 {% block content %}
 
@@ -11,7 +11,7 @@
         <p>List of movies has been added:</p>
       </div>
       <div class="col-sm col align-self-end" >
-        <div class="text-right"><a href="/add_movies" class="btn btn-primary">Add Movie</a>
+        <div class="text-right"><a href="{{url_for('admin_movies.add_movies')}}" class="btn btn-primary">Add Movie</a>
       </div>
     </div>
   </div>

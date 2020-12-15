@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}Add Movie {% endblock %}
 {% block head %}
 {{ super() }}
@@ -8,7 +8,7 @@
 <div class="container-fluid">
 
     <h2>Add Schedule Form</h2>
-    <form method="POST" action="/add_schedule">
+    <form method="POST" action="{{url_for('admin_schedule.add_schedule')}}">
         <p>
         <div class="form-row">
             <div class="col">

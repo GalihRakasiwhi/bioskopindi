@@ -1,0 +1,46 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'admin/admin_base.html' %}
+{% block title %}Dashboard Roles {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>Roles</h2>
+        <p>List of roles has been added:</p>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <div class="text-right"><a href="/admin/add_roles" class="btn btn-primary">Add Roles</a>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Roles</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in roles  %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.role }}</td>
+        <td>
+          <a href="/admin/edit_roles/{{ x.id }}">Edit</a>
+          {% if x.id > 2 %}
+           | <a href="/admin/delete_roles/{{ x.id }}" onclick="return confirm('Are you sure to Delete role &quot;{{ x.role }}&quot; ?')">Delete</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

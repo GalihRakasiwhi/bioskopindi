@@ -1,0 +1,22 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'admin/admin_base.html' %}
+{% block title %}Dashboard Add Roles {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <h2>Edit Roles Form</h2>
+    <form method="POST" action="/admin/edit_roles/{{ roles.id }}">
+        <div class="form-row">
+            <div class="col">
+                {{ displayField(form.role, 'Roles Name *', autocomplete='off', autofocus=true, value=roles.role) }}
+            </div>
+            <div class="col">
+                {{ form.submit_button(value='Edit') }}
+            </div>
+        </div>
+        {{ form.csrf_token }}
+    </form>
+
+</div>
+
+{% endblock %}
