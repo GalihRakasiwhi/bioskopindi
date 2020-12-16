@@ -21,12 +21,3 @@ def index():
     movies = MovieModel.query.all()
 
     return render_template('/movies/now_playing.html', movies=movies)
-
-@bp.route('/test')
-def test():
-    #set auth
-    if not current_user.is_authenticated:
-    	flash('Please login!', 'danger')
-    	return redirect(url_for('auth.login'))
-    	
-    return render_template('test.html')

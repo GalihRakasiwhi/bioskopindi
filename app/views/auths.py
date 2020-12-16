@@ -106,16 +106,3 @@ def logout():
 	logout_user()
 	flash('Logout succesfylly', 'success')
 	return redirect(url_for('auth.login'))
-
-
-#test ---
-@bp.route('/test1', methods=['Get'])
-def test1():
-    user_object = db.session.query(UsersModel).order_by(UsersModel.id.desc()).first()
-    role_object = RolesModel.query.get(2)
-
-    #user_object = UsersModel.query.filter_by(id=1).first()
-
-
-    return render_template('test.html', user_object=user_object, role_object=role_object)
-

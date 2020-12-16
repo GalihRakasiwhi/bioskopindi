@@ -16,6 +16,19 @@ app = create_app()
 def migrate_all():
     db.create_all()
 
+    #check if tbl role is null
+    if not db.session.query(db.exists().where(RolesModel.role == 'Admin')).scalar():
+    	roles = RolesModel(role = 'Admin')
+    	db.session.add(roles)
+    	db.session.commit()
+    	print('Role Admin added')
+
+    if not db.session.query(db.exists().where(RolesModel.role == 'User')).scalar():
+    	roles = RolesModel(role = 'User')
+    	db.session.add(roles)
+    	db.session.commit()
+    	print('Role User added')
+
 
 if __name__ == '__main__':
     with app.app_context():

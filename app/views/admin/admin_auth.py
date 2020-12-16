@@ -51,14 +51,23 @@ def register():
             full_name = request.form['full_name'],
             email = request.form['email'],
             password = hashed_password #request.form['password']
-            
         )
-        
         db.session.add(user)
         db.session.commit()
+
+        user_object = db.session.query(UsersModel).order_by(UsersModel.id.desc()).first()
+        role_object = RolesModel.query.get(1)
+
+        user_role = UsersRolesModel(
+            user_id = user_object.id,
+            role_id = role_object.id
+        )
+        db.session.add(user_role)
+        db.session.commit()
+
         return redirect(url_for('admin_auth.login'))
 
-    return render_template('auths/register.html', form=form)
+    return render_template('admin/auth/register.html', form=form)
 
 
 #Login ---
@@ -99,19 +108,9 @@ def edit_account():
         user_object.email = request.form['email']
 
         db.session.commit()
-        return redirect(url_for('auth.account'))
+        return redirect(url_for('admin_auth.account'))
     
     return render_template('account/edit_account.html', form=form)
-
-
-#Logout ---
-@bp.route('/logout', methods=['Get'])
-def logout():
-    logout_user()
-    flash('Logout succesfylly', 'success')
-    return redirect(url_for('auth.login'))
-
-
 
 #Roles ---
 @bp.route('/admin/roles', methods=['GET', 'POST'])
