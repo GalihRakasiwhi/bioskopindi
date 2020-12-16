@@ -68,4 +68,7 @@ def create_app():
     from app.views.message import bp as message
     app.register_blueprint(message)
 
+    from app.views.test import bp as test
+    app.register_blueprint(test)
+
     return app

@@ -102,7 +102,7 @@ def add_movies():
         db.session.commit()
         flash('Adding Movie Successfully', 'success')
 
-        return redirect(url_for('movie.movies'))
+        return redirect(url_for('admin_movies.movies'))
     return render_template('admin/movies/add_movies.html', form=form)
 
 
@@ -222,4 +222,4 @@ def detile(id):
     db_date_release = str(movies.movie_released).split()
     db_duration = m_to_h(int(movies.movie_duration))
 
-    return render_template('detile.html', movies=movies, form=form, db_date_release=db_date_release, db_duration=db_duration)
+    return render_template('/admin/movies/detile.html', movies=movies, form=form, db_date_release=db_date_release, db_duration=db_duration)

@@ -1,0 +1,14 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Login {% endblock %}
+{% block content %}
+<div class="container-fluid" style="width: 70%">
+	<h2>Login Now!</h2>
+	<form method="POST" action="{{ url_for('auth.login') }}">
+	    {{ displayField(form.username, 'Username', autocomplete='off', autofocus=true) }}
+	    {{ displayField(form.password, 'Password') }}
+	    <div>{{ form.submit_button }}</div>
+	    {{ form.csrf_token }}
+	</form>
+</div>
+{% endblock %}
