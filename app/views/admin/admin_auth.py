@@ -112,6 +112,29 @@ def edit_account():
     
     return render_template('account/edit_account.html', form=form)
 
+
+#User---
+@bp.route('/admin/users', methods=['GET', 'POST'])
+#@login_required
+def users():
+    #check auth
+    if not current_user.is_authenticated:
+        flash_login()
+        return redirect(url_for('auth.login'))
+
+    #check is admin
+    if current_user.user_role[0].role_id != 1:
+        flash_login_admin()
+        return redirect(url_for('index.index'))
+
+    #user_object = UsersModel.query.all()
+    user_object = db.session.query(UsersModel, UsersRolesModel, RolesModel). \
+    select_from(UsersModel).join(UsersRolesModel).join(RolesModel).all()
+
+    return render_template('admin/auth/users.html', user_object=user_object)
+
+
+
 #Roles ---
 @bp.route('/admin/roles', methods=['GET', 'POST'])
 def roles():

@@ -34,7 +34,7 @@
                 <a href="{{ url_for('admin_schedule.schedule') }}" class="list-group-item list-group-item-action bg-light">Schedule</a>
                 <a href="{{ url_for('admin_studio.studio') }}"class="list-group-item list-group-item-action bg-light">Studio</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Ticket</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">User</a>
+                <a href="{{ url_for('admin_auth.users') }}" class="list-group-item list-group-item-action bg-light">User</a>
                 <a href="{{ url_for('admin_auth.roles') }}" class="list-group-item list-group-item-action bg-light">Role</a>
               </div>
             </div>
