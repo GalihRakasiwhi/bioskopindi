@@ -22,6 +22,7 @@ bp = Blueprint  ('admin_movies', __name__)
 #set dir image
 dir_image="static/img/poster/"
 dir_image_real="app/static/img/poster/"
+rows_per_page = 10
 
 @bp.route('/admin/movies', methods=['GET', 'POST'])
 def movies():
@@ -35,7 +36,14 @@ def movies():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
-    movies = MovieModel.query.all()
+    #set pagination
+    page = request.args.get('page', 1, type=int)
+
+    movies = MovieModel.query.order_by(MovieModel.movie_added.desc()). \
+    paginate(page=page, per_page = rows_per_page)
+
+    #movies = MovieModel.query.all()
+
 
     return render_template('admin/movies/movies.html', movies=movies)
 

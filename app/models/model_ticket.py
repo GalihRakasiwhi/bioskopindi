@@ -12,4 +12,4 @@ class TicketModel(db.Model):
     ticket_added = db.Column(db.DateTime, nullable=False)
 
     def __repr(self):
-        return f"<BookingTicket {self.id}>"
+        return f"<TicketModel {self.id}>"

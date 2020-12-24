@@ -17,6 +17,7 @@ from app.forms.form_movies import MoviesForm
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
+from app.views.functions_plus import flash_login
 from app.extensions._db import db
 
 bp = Blueprint  ('ticket', __name__)
@@ -44,9 +45,9 @@ def ticket(id):
 @bp.route('/buy_ticket/<id>', methods=['GET', 'POST'])
 #@login_required
 def buy_ticket(id):
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     form = TicketForm()
@@ -84,13 +85,41 @@ def buy_ticket(id):
     	form=form, movies=movies, schedule=schedule, schedule_get=schedule_get
     	)
 
-#C ---
-@bp.route('/choose_seat/<id>', methods=['GET', 'POST'])
+@bp.route('/select_seat/<id>', methods=['GET', 'POST'])
 #@login_required
-def choose_seat(id):
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
+def select_seat(id):
+    form = TicketForm()
 
-    return 'mantap seat'
+    ticket = TicketModel.query.all()
+    schedule = ScheduleModel.query.all()
+    schedule_get = ScheduleModel.query.get(id)
+    movies = MovieModel.query.get(id)
+
+    schedule = db.session.query(ScheduleModel, MovieModel, StudioModel). \
+        select_from(ScheduleModel). \
+        order_by(ScheduleModel.schedule_date.asc()). \
+        join(MovieModel).filter_by(id=id). \
+        join(StudioModel).all()
+    
+    #schedule[0][1].movie_title
+
+    if request.method == 'POST':
+#        unique_ticket_code= str(uuid.uuid4())[:8] 
+#        booking = TicketModel(
+#            ticket_code = unique_ticket_code,
+#            ticket_user = current_user.id,
+#            ticket_schedule = request.form['ticket_schedule'],
+#            ticket_seat_number = request.form['ticket_seat_number'],
+#            ticket_payment = 'Waiting for Payment',
+#            ticket_added = datetime.today()
+#        )
+        
+#        db.session.add(booking)
+#        db.session.commit()
+        return redirect(url_for('index.index'))
+
+    return render_template(
+        'ticket/seat.html', form=form, movies=movies,
+        schedule=schedule, schedule_get=schedule_get
+        )
+

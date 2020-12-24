@@ -9,4 +9,4 @@ class RolesModel(db.Model):
     role_user = db.relationship('UsersRolesModel', backref='tblRoles', lazy=True)
 
     def __repr(self):
-        return f"<Roles {self.id}>"
+        return f"<RolesModel {self.id}>"

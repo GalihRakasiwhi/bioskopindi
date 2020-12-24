@@ -11,4 +11,4 @@ class UserRolesModel(db.Model):
 
 
     def __repr(self):
-        return f"<UserRoles {self.full_name}>"
+        return f"<UserRolesModel {self.full_name}>"

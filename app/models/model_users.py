@@ -12,4 +12,4 @@ class UsersModel(UserMixin, db.Model):
     user_role = db.relationship('UsersRolesModel', backref='tblUsers', lazy=True)
 
     def __repr(self):
-        return f"<Users {self.full_name}>"
+        return f"<UsersModel {self.full_name}>"

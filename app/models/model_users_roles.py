@@ -8,4 +8,4 @@ class UsersRolesModel(db.Model):
 
 
     def __repr(self):
-        return f"<UserRoles {self.id}>"
+        return f"<UsersRolesModel {self.id}>"
