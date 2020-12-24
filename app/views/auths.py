@@ -13,6 +13,7 @@ from app.models.model_users import UsersModel
 from app.models.model_roles import RolesModel
 from app.models.model_users_roles import UsersRolesModel
 from app.models.model_message_to_system import MessageToSystemModel
+from app.models.model_booking_ticket import BookingTicketModel
 from app.extensions._db import db
 from app.views.functions_plus import allowed_image
 
