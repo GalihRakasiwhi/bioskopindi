@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for x in movies  %}
+      {% for x in movies.items  %}
       <tr>
         <td>{{ x.id }}</td>
         <td>{{ x.movie_title }} ({{x.movie_added.strftime('%Y')}})</td>
@@ -40,7 +40,47 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <!-- pagenination link -->
+  <div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-end">
+        <li class="page-item">
+          <a href="{{ url_for('admin_movies.movies', page=1) }}"
+          {% if movies.page==1 %} disabled {% endif %}><span class="page-link">First</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a href="{{ url_for('admin_movies.movies', page=movies.prev_num) }}"
+          {% if movies.page==1 %} disabled {% endif %}><span class="page-link">Previous</span>
+          </a>
+        </li>
+    <!-- loop pange number -->
+    {% for page_num in movies.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+
+    {% if page_num %}
+    <!-- check the active page and set link to active-->
+      {% if movies.page == page_num %}
+        <li class="page-link"><a href="{{ url_for('admin_movies.movies', page=page_num) }}" class="page-item">{{ page_num }}</a></li>
+      {% else %}
+        <li class="page-link"><a href="{{ url_for('admin_movies.movies', page=page_num) }}" class="page-item">{{ page_num }}</a></li>
+      {% endif %}
+    {% else %}
+      ...
+    {% endif%}
+    {% endfor %}
+      <li class="page-item">
+        <a href="{{ url_for('admin_movies.movies', page=movies.next_num) }}"
+        {% if movies.page == movies.pages %} disabled {% endif %}><span class="page-link">Next</span></a>
+      </li>
+      <li class="page-item">
+        <a href="{{ url_for('admin_movies.movies', page=movies.pages) }}"
+        {% if movies.page == movies.pages %} disabled {% endif %}><span class="page-link">End</span></a>
+      </li>
+    </ul>
+    <p class="text-right">Showing Page {{ movies.page }} of {{ movies.pages }}</p>
+    </nav> 
+  </div>
+
 </div>
-
-
 {% endblock %}

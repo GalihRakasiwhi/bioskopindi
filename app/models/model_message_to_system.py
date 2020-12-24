@@ -10,4 +10,4 @@ class MessageToSystemModel(db.Model):
     message_send_time = db.Column(db.DateTime, nullable=False)
 
     def __repr(self):
-        return f"<BookingTicket {self.id}>"
+        return f"<MessageToSystemModel {self.id}>"

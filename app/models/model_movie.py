@@ -31,7 +31,7 @@ class StudioModel(db.Model):
     studio_schedule = db.relationship('ScheduleModel', backref='tblStudio', lazy=True)
 
     def __repr(self):
-        return f"<Movie {self.id}>"
+        return f"<StudioModel {self.id}>"
 
 
 class ScheduleModel(db.Model):
@@ -45,4 +45,4 @@ class ScheduleModel(db.Model):
     schedule_added = db.Column(db.DateTime, nullable=False)
 
     def __repr(self):
-        return f"<Movie {self.id}>"
+        return f"<ScheduleModel {self.id}>"

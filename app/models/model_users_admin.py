@@ -11,4 +11,4 @@ class UsersAdminModel(UserMixin, db.Model):
     #userrole = relationship('UserRolesModel', backref='user', lazy=True)
 
     def __repr(self):
-        return f"<Users {self.full_name}>"
+        return f"<UsersAdminModel {self.full_name}>"
