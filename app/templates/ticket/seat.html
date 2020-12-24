@@ -7,132 +7,138 @@
 {% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/custom.css') }}">
-<div>
-<center>
-  
-<table>
-  <tr>
-    <td colspan="9"><div class="screen">SCREEN</div></td>
-    <td rowspan="11">
-      <div class="smallBox greenBox">Selected Seat</div> <br/>
-      <div class="smallBox redBox">Reserved Seat</div><br/>
-      <div class="smallBox emptyBox">Empty Seat</div><br/>
-    </td>
+<div class="container-fluid" align="center">
     
+    <form method="POST" accept="/select_seat/{{ schedule[0][0].id }}">
+    <table border="0">
+      <tr>
+        <td colspan="9">
+            <div align="left">
+                Movie: {{ schedule[0][1].movie_title }}<br>
+                Schedule: {{ schedule[0][0].schedule_date }} - {{ schedule[0][0].schedule_time.strftime('%H:%M %p') }}
+            </div>
+            <br><div class="screen">SCREEN</div></td>
+        <td rowspan="11" valign="bottom">
+          <div class="smallBox greenBox">Selected Seat</div> <br/>
+          <div class="smallBox redBox">Reserved Seat</div><br/>
+          <div class="smallBox emptyBox">Empty Seat</div><br/>
+        </td>
+        
+        <br/>
+      </tr>
+      <tr class="seatVGap"></tr>
+      <tr>
+        <td></td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td></td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+    </tr>
+      
+    <tr>
+        <td>A</td>
+        <td><input type="checkbox" name="seats" value="A1"></td>
+        <td><input type="checkbox" name="seats" value="A2"></td>
+        <td><input type="checkbox" name="seats" value="A3"></td>
+        <td class="seatGap"></td>
+        <td><input type="checkbox" name="seats" value="A4"></td>
+        <td><input type="checkbox" name="seats" value="A5"></td>
+        <td><input type="checkbox" name="seats" value="A6"></td>
+        <td><input type="checkbox" name="seats" value="A7"></td>
+      </tr>
+      
+      <tr>
+        <td>B</td>
+        <td><input type="checkbox" name="seats" value="B1"></td>
+        <td><input type="checkbox" name="seats" value="B2"></td>
+        <td><input type="checkbox" name="seats" value="B3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="B4"></td>
+        <td><input type="checkbox" name="seats" value="B5"></td>
+        <td><input type="checkbox" name="seats" value="B6"></td>
+        <td><input type="checkbox" name="seats" value="B7"></td>
+      </tr>
+      
+      <tr>
+        <td>C</td>
+        <td><input type="checkbox" name="seats" value="C1"></td>
+        <td><input type="checkbox" name="seats" value="C2"></td>
+        <td><input type="checkbox" name="seats" value="C3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="C4"></td>
+        <td><input type="checkbox" name="seats" value="C5"></td>
+        <td><input type="checkbox" name="seats" value="C6"></td>
+        <td><input type="checkbox" name="seats" value="C7"></td>
+    </tr>
+      
+    <tr>
+        <td>D</td>
+        <td><input type="checkbox" name="seats" value="D1"></td>
+        <td><input type="checkbox" name="seats" value="D2"></td>
+        <td><input type="checkbox" name="seats" value="D3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="D4"></td>
+        <td><input type="checkbox" name="seats" value="D5"></td>
+        <td><input type="checkbox" name="seats" value="D6"></td>
+        <td><input type="checkbox" name="seats" value="D7"></td>
+    </tr>
+      
+    <tr>
+        <td>E</td>
+        <td><input type="checkbox" name="seats" value="E1"></td>
+        <td><input type="checkbox" name="seats" value="E2"></td>
+        <td><input type="checkbox" name="seats" value="E3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="E4"></td>
+        <td><input type="checkbox" name="seats" value="E5"></td>
+        <td><input type="checkbox" name="seats" value="E6"></td>
+        <td><input type="checkbox" name="seats" value="E7"></td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td><input type="checkbox" name="seats" value="F1"></td>
+        <td><input type="checkbox" name="seats" value="F2"></td>
+        <td><input type="checkbox" name="seats" value="F3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="F4"></td>
+        <td><input type="checkbox" name="seats" value="F5"></td>
+        <td><input type="checkbox" name="seats" value="F6"></td>
+        <td><input type="checkbox" name="seats" value="F7"></td>
+    </tr>
+      
+    <tr>
+        <td>G</td>
+        <td><input type="checkbox" name="seats" value="G1"></td>
+        <td><input type="checkbox" name="seats" value="G2"></td>
+        <td><input type="checkbox" name="seats" value="G3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="G4"></td>
+        <td><input type="checkbox" name="seats" value="G5"></td>
+        <td><input type="checkbox" name="seats" value="G6"></td>
+        <td><input type="checkbox" name="seats" value="G7"></td>
+    </tr>
+      
+    <tr>
+        <td>H</td>
+        <td><input type="checkbox" name="seats" value="H1"></td>
+        <td><input type="checkbox" name="seats" value="H2"></td>
+        <td><input type="checkbox" name="seats" value="H3"></td>
+        <td></td>
+        <td><input type="checkbox" name="seats" value="H4"></td>
+        <td><input type="checkbox" name="seats" value="H5"></td>
+        <td><input type="checkbox" name="seats" value="H6"></td>
+        <td><input type="checkbox" name="seats" value="H7"></td>
+    </tr>  
+      
+    </table>
     <br/>
-  </tr>
-  <tr class="seatVGap"></tr>
-  <tr>
-    <td></td>
-    <td>1</td>
-    <td>2</td>
-    <td>3</td>
-    <td></td>
-    <td>4</td>
-    <td>5</td>
-    <td>6</td>
-    <td>7</td>
-</tr>
-  
-<tr>
-    <td>A</td>
-    <td><input type="checkbox" class="seats" value="A1" disabled></td>
-    <td><input type="checkbox" class="seats" value="A2"></td>
-    <td><input type="checkbox" class="seats" value="A3"></td>
-    <td class="seatGap"></td>
-    <td><input type="checkbox" class="seats" value="A4"></td>
-    <td><input type="checkbox" class="seats" value="A5"></td>
-    <td><input type="checkbox" class="seats" value="A6"></td>
-    <td><input type="checkbox" class="seats" value="A7"></td>
-  </tr>
-  
-  <tr>
-    <td>B</td>
-    <td><input type="checkbox" class="seats" value="B1"></td>
-    <td><input type="checkbox" class="seats" value="B2"></td>
-    <td><input type="checkbox" class="seats" value="B3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="B4"></td>
-    <td><input type="checkbox" class="seats" value="B5"></td>
-    <td><input type="checkbox" class="seats" value="B6"></td>
-    <td><input type="checkbox" class="seats" value="B7"></td>
-  </tr>
-  
-  <tr>
-    <td>C</td>
-    <td><input type="checkbox" class="seats" value="C1"></td>
-    <td><input type="checkbox" class="seats" value="C2"></td>
-    <td><input type="checkbox" class="seats" value="C3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="C4"></td>
-    <td><input type="checkbox" class="seats" value="C5"></td>
-    <td><input type="checkbox" class="seats" value="C6"></td>
-    <td><input type="checkbox" class="seats" value="C7"></td>
-</tr>
-  
-<tr>
-    <td>D</td>
-    <td><input type="checkbox" class="seats" value="D1"></td>
-    <td><input type="checkbox" class="seats" value="D2"></td>
-    <td><input type="checkbox" class="seats" value="D3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="D4"></td>
-    <td><input type="checkbox" class="seats" value="D5"></td>
-    <td><input type="checkbox" class="seats" value="D6"></td>
-    <td><input type="checkbox" class="seats" value="D7"></td>
-</tr>
-  
-<tr>
-    <td>E</td>
-    <td><input type="checkbox" class="seats" value="E1"></td>
-    <td><input type="checkbox" class="seats" value="E2"></td>
-    <td><input type="checkbox" class="seats" value="E3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="E4"></td>
-    <td><input type="checkbox" class="seats" value="E5"></td>
-    <td><input type="checkbox" class="seats" value="E6"></td>
-    <td><input type="checkbox" class="seats" value="E7"></td>
-</tr>
-<tr>
-    <td>F</td>
-    <td><input type="checkbox" class="seats" value="F1"></td>
-    <td><input type="checkbox" class="seats" value="F2"></td>
-    <td><input type="checkbox" class="seats" value="F3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="F4"></td>
-    <td><input type="checkbox" class="seats" value="F5"></td>
-    <td><input type="checkbox" class="seats" value="F6"></td>
-    <td><input type="checkbox" class="seats" value="F7"></td>
-</tr>
-  
-<tr>
-    <td>G</td>
-    <td><input type="checkbox" class="seats" value="G1"></td>
-    <td><input type="checkbox" class="seats" value="G2"></td>
-    <td><input type="checkbox" class="seats" value="G3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="G4"></td>
-    <td><input type="checkbox" class="seats" value="G5"></td>
-    <td><input type="checkbox" class="seats" value="G6"></td>
-    <td><input type="checkbox" class="seats" value="G7"></td>
-</tr>
-  
-<tr>
-    <td>H</td>
-    <td><input type="checkbox" class="seats" value="H1"></td>
-    <td><input type="checkbox" class="seats" value="H2"></td>
-    <td><input type="checkbox" class="seats" value="H3"></td>
-    <td></td>
-    <td><input type="checkbox" class="seats" value="H4"></td>
-    <td><input type="checkbox" class="seats" value="H5"></td>
-    <td><input type="checkbox" class="seats" value="H6"></td>
-    <td><input type="checkbox" class="seats" value="H7"></td>
-</tr>  
-  
-</table>
-  
-<br/><button onclick="return confirm('Are you sure?">Confirm Selection</button>
-</center>
+    <div>{{ form.submit_button(onclick="return confirm('Are you sure?')") }}</div>
+    {{ form.csrf_token }}
+    </form>
 </div>
 
 

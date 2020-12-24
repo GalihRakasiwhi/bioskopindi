@@ -1,0 +1,54 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'admin/admin_base.html' %}
+{% block title %}Ticket Page {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>Booking Ticket</h2>
+        <p>List of Booking Ticket:</p>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <!-- <div class="text-right"><a href="/add_studio" class="btn btn-primary">Add Studio</a> -->
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Movie</th>
+        <th>Schedule</th>
+        <th>Studio</th>
+        <th>Seats Number</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Added</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in booking_ticket %}
+      <tr>
+        <td>{{ x[0].id }}</td>
+        <td>{{ x[2].movie_title }}</td>
+        <td>{{ x[1].schedule_date }}<br>{{ x[1].schedule_time }}</td>
+        <td>{{ x[3].studio_name }}</td>
+        <td>{{ x[0].bticket_seats_number }}</td>
+        <td>{{ 'Rp {:,.0f}'.format(x[0].bticket_price) }}</td>
+        <td>{{ x[0].bticket_status }}</td>
+        <td>
+          {{ x[0].bticket_added.strftime('%y-%m-%d') }}<br>
+          {{ x[0].bticket_added.strftime('%H:%M %p') }}
+        </td>
+        <td><a href="#">Confirm Payment</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}

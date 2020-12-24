@@ -6,6 +6,7 @@ class MovieModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     movie_title = db.Column(db.String(128), nullable=False)
     movie_img_url = db.Column(db.String(255))
+    movie_trailer_url = db.Column(db.String(255))
     #movie_country = db.Column(db.String(64))
     movie_duration = db.Column(db.Integer)
     #movie_genre = db.Column(db.String(128))
@@ -42,6 +43,7 @@ class ScheduleModel(db.Model):
     schedule_date = db.Column(db.Date, nullable=False)
     schedule_time = db.Column(db.Time, nullable=True)
     schedule_ticket = db.relationship('TicketModel', backref='tblSchedules', lazy=True)
+    schedule_booking = db.relationship('BookingTicketModel', backref='tblSchedules', lazy=True)
     schedule_added = db.Column(db.DateTime, nullable=False)
 
     def __repr(self):
