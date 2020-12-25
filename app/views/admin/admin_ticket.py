@@ -11,6 +11,8 @@ from app.forms.form_studio import StudioForm
 from app.models.model_users import UsersModel
 from app.models.model_ticket import TicketModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
+from app.views.functions_plus import flash_login, flash_login_admin
+from app.views.admin.admin_message import message_list
 from app.extensions._db import db
 
 bp = Blueprint  ('admin_ticket', __name__)
@@ -29,8 +31,9 @@ def ticket():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
+    message = message_list()
     ticket = TicketModel.query.all()
     ticket = db.session.query(TicketModel, UsersModel, ScheduleModel, MovieModel, StudioModel). \
     select_from(TicketModel).join(UsersModel).join(ScheduleModel).join(MovieModel).join(StudioModel).all()
     
-    return render_template('admin/ticket/ticket.html', ticket=ticket)
+    return render_template('admin/ticket/ticket.html', message=message, ticket=ticket)

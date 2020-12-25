@@ -15,8 +15,9 @@ from app.forms.form_movies import MoviesForm
 from app.forms.form_message_to_system import MesageToSystemForm
 from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_movie import MovieModel
+from app.models.model_booking_ticket import BookingTicketModel
 from app.extensions._db import db
-from app.views.functions_plus import allowed_image, clean_tags, m_to_h
+from app.views.functions_plus import allowed_image, clean_tags, flash_login, m_to_h
 
 
 bp = Blueprint  ('message', __name__)
@@ -27,9 +28,9 @@ dir_image_real="app/static/img/message/"
 
 @bp.route('/confirm_payment/<id>', methods=['GET', 'POST'])
 def confirm_payment(id):
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     form = MesageToSystemForm()
@@ -41,7 +42,7 @@ def confirm_payment(id):
                 flash('must have upload image / image must have filename', 'danger')
                 return redirect(request.url)
             
-            #chek allowed ext and set filename
+            #check allowed ext and set filename
             if not allowed_image(image.filename):
                 flash('That image extension is not allowed', 'danger')
                 return redirect(request.url)
@@ -56,7 +57,7 @@ def confirm_payment(id):
         message = MessageToSystemModel(
             message_user_id = current_user.id,
             message_type = request.form['message_type'],
-            message_text = f"Confirm Payment for Ticket id: {id}\n " + cleaned_desc,
+            message_text = cleaned_desc,
             message_img_url = f"{dir_image}{filename}",
             message_status = 'Unread',
             message_send_time = datetime.today()

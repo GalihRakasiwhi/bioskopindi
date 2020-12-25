@@ -16,6 +16,7 @@ from app.models.model_users_roles import UsersRolesModel
 from app.models.model_message_to_system import MessageToSystemModel
 from app.extensions._db import db
 from app.views.functions_plus import flash_login, flash_login_admin, allowed_image
+from app.views.admin.admin_message import message_list
 
 bp = Blueprint  ('admin_auth', __name__)
 
@@ -127,11 +128,13 @@ def users():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
+    message = message_list()
+
     #user_object = UsersModel.query.all()
     user_object = db.session.query(UsersModel, UsersRolesModel, RolesModel). \
     select_from(UsersModel).join(UsersRolesModel).join(RolesModel).all()
 
-    return render_template('admin/auth/users.html', user_object=user_object)
+    return render_template('admin/auth/users.html', message=message, user_object=user_object)
 
 
 
@@ -148,10 +151,11 @@ def roles():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
+    message = message_list()
     form = AdminRolesForm()
     roles = RolesModel.query.all()
 
-    return render_template('admin/auth/roles.html', form=form, roles=roles)
+    return render_template('admin/auth/roles.html', form=form, message=message, roles=roles)
 
 
 #Add Roles
@@ -161,6 +165,8 @@ def add_roles():
     if not current_user.is_authenticated:
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
+
+    message = message_list()
 
     form = AdminRolesForm()
 
@@ -173,7 +179,7 @@ def add_roles():
 
         return redirect(url_for('admin_auth.roles'))
 
-    return render_template('admin/auth/add_roles.html', form=form)
+    return render_template('admin/auth/add_roles.html', form=form, message=message)
 
 #Add Roles
 @bp.route('/admin/edit_roles/<id>', methods=['GET', 'POST'])
@@ -182,6 +188,8 @@ def edit_roles(id):
     if not current_user.is_authenticated:
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
+
+    message = message_list()
 
     form = AdminRolesForm()
     roles = RolesModel.query.get(id)
@@ -192,7 +200,7 @@ def edit_roles(id):
 
         return redirect(url_for('admin_auth.roles'))
 
-    return render_template('admin/auth/edit_roles.html', form=form, roles=roles)
+    return render_template('admin/auth/edit_roles.html', form=form, message=message, roles=roles)
 
 
 #Delete Roles

@@ -11,22 +11,33 @@
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
-
     <h2>Confirm Form</h2>
     <form method="POST" enctype="multipart/form-data" action="/confirm_payment/{{ id }}">
         <div class="form-row">
             <div class="col">
             {{ form.message_type.label }} *
-            {{ displayField(form.message_type, 'Message Type', autocomplete='off', autofocus=true) }}
+            <!--
+                {{ displayField(form.message_type, 'Message Type', autocomplete='off', autofocus=true) }}
+            -->
+            <select class="form-control" name="message_type" data-value="" onfocus="this.setAttribute('data-value', this.value);" onchange="this.value = this.getAttribute('data-value');">
+                <option value="Confirm Payment">Confirm Payment</option>
+                <option value="Report Bug">Report Bug</option>
+                <option value="Sugestion">Sugestion</option>
+            </select>
             </div>
             <div class="col">
                 {{ form.message_img_url.label }} *<br/>
                 <input type="file" name="image">
             </div>
         </div>
+        <br/>
         <div>
             {{ form.message_text.label }} (optional)<br/>
-            <textarea class='form-control' id="summernote" name="message_text"></textarea>
+            <textarea class='form-control' id="summernote" name="message_text">
+                Username : <br/>
+                Id Ticket : <br/>
+                Payment Date : <br/>
+            </textarea>
         </div>
         <div>{{ form.submit_button }}</div>
         {{ form.csrf_token }}

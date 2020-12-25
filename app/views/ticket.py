@@ -25,17 +25,16 @@ from app.extensions._db import db
 bp = Blueprint  ('ticket', __name__)
 
 #ticket ---
-@bp.route('/ticket/<id>', methods=['GET', 'POST'])
+@bp.route('/ticket/', methods=['GET', 'POST'])
 #@login_required
-def ticket(id):
+def ticket():
     #set auth
     if not current_user.is_authenticated:
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
-    ticket = TicketModel.query.get(id)
     ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel). \
-        select_from(TicketModel).filter_by(ticket_user=id). \
+        select_from(TicketModel).filter_by(ticket_user=current_user.id). \
         order_by(TicketModel.ticket_added.asc()). \
         join(ScheduleModel). \
         join(MovieModel). \
@@ -103,6 +102,9 @@ def booking_ticket():
         join(ScheduleModel). \
         join(MovieModel). \
         join(StudioModel).all()
+
+    #word = "{B4,B5}"
+    #print(word.replace("{", "").replace("}", "").split(","))
 
     return render_template('ticket/booking_ticket.html', booking_ticket=booking_ticket)
 

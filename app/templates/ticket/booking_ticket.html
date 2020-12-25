@@ -1,5 +1,5 @@
 {% from 'auths/form_helper.html' import displayField %}
-{% extends 'admin/admin_base.html' %}
+{% extends 'base.html' %}
 {% block title %}Ticket Page {% endblock %}
 {% block content %}
 
@@ -15,6 +15,7 @@
       </div>
     </div>
   </div>
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -43,7 +44,7 @@
           {{ x[0].bticket_added.strftime('%y-%m-%d') }}<br>
           {{ x[0].bticket_added.strftime('%H:%M %p') }}
         </td>
-        <td><a href="#">Confirm Payment</a></td>
+        <td><a href="/confirm_payment/{{ x[0].id }}">Confirm Payment</a></td>
       </tr>
       {% endfor %}
     </tbody>
