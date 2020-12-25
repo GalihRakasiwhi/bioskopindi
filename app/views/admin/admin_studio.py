@@ -10,6 +10,8 @@ from wtforms.fields.html5 import DateField
 from app.forms.form_studio import StudioForm
 from app.models.model_movie import MovieModel, StudioModel
 from app.views.movies import clean_tags
+from app.views.functions_plus import flash_login, flash_login_admin
+from app.views.admin.admin_message import message_list
 from app.extensions._db import db
 
 bp = Blueprint  ('admin_studio', __name__)
@@ -28,9 +30,10 @@ def studio():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
+    message = message_list()
     studio = StudioModel.query.all()
 
-    return render_template('admin/studio/studio.html', studio=studio)
+    return render_template('admin/studio/studio.html', message=message, studio=studio)
 
 
 #add studio ---
@@ -47,6 +50,7 @@ def add_studio():
         flash_login_admin()
         return redirect(url_for('index.index'))
     
+    message = message_list()
     form = StudioForm()
     
     if request.method == 'POST' and form.validate():
@@ -67,7 +71,7 @@ def add_studio():
 
         return redirect(url_for('studio.studio'))
 
-    return render_template('admin/studio/add_studio.html', form=form)
+    return render_template('admin/studio/add_studio.html', form=form, message=message)
 
 #edit studio ---
 @bp.route('/admin/edit_studio/<id>', methods=['GET', 'POST'])
@@ -83,6 +87,7 @@ def edit_studio(id):
         flash_login_admin()
         return redirect(url_for('index.index'))
 
+    message = message_list()
     form = StudioForm()
     studio = StudioModel.query.get(id)
 
@@ -101,4 +106,5 @@ def edit_studio(id):
 
         return redirect(url_for('studio.studio'))
 
-    return render_template('admin/studio/edit_studio.html', form=form, studio=studio)
+    return render_template('admin/studio/edit_studio.html', 
+        form=form, message=message, studio=studio)

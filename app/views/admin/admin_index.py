@@ -15,10 +15,13 @@ from app.models.model_users_admin import UsersAdminModel
 from app.models.model_roles import RolesModel
 from app.models.model_users_roles import UsersRolesModel
 from app.models.model_message_to_system import MessageToSystemModel
-
+from app.views.functions_plus import flash_login, flash_login_admin
+from app.views.admin.admin_message import message_list
 from app.extensions._db import db
 
 bp = Blueprint  ('admin', __name__)
+
+rows_per_page = 10
 
 @bp.route('/admin/')
 def index():
@@ -38,7 +41,14 @@ def index():
     schedule = ScheduleModel.query.all()
     ticket = TicketModel.query.all()
     users = UsersModel.query.all()
+    #message_unread = MessageToSystemModel.query.all()
 
-    return render_template('admin/index.html', movies=movies, studio=studio, schedule=schedule, ticket=ticket, users=users)
+    message = message_list()
+
+    return render_template('admin/index.html', 
+        movies=movies, message=message, 
+        studio=studio, schedule=schedule, 
+        ticket=ticket, users=users
+        )
 
     

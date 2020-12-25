@@ -71,7 +71,9 @@
                       </a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ url_for('auth.account') }}">My Account</a>
-                        <a class="dropdown-item" href="/ticket/{{ current_user.id }}">My Ticket</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/booking_ticket/">My Booking</a>
+                        <a class="dropdown-item" href="/ticket/">My Ticket</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a>
                       </div>

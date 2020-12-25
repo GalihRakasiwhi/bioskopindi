@@ -1,0 +1,88 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'admin/admin_base.html' %}
+{% block title %}Message Page {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h2>Message</h2>
+        <p>List of Message has been Sended:</p>
+      </div>
+      <div class="col-sm col align-self-end" >
+        <div class="text-right"><a href="#" class="btn btn-primary">Add Message</a>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Username</th>
+        <th>Type</th>
+        <th>Image</th>
+        <th>Satus</th>
+        <th>Send Time</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in message.items  %}
+      <tr>
+        <td>{{ x[0].id }}</td>
+        <td>{{ x[1].username }}</td>
+        <td>{{ x[0].message_type }}</td>
+        <td>{{ x[0].message_img_url }}</td>
+        <td>{{ x[0].message_status }}</td>
+        <td>{{ x[0].message_send_time.strftime('%Y-%m-%d') }}</td>
+        <td><a href="detile/{{ x.id }}">Detile</a> | <a href="#/{{ x.id }}" onclick="return confirm('Are you sure to Delete message &quot;{{ x.id }}&quot; ?')">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- pagenination link -->
+  <div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-end">
+        <li class="page-item">
+          <a href="{{ url_for('admin_message.message', page=1) }}"
+          {% if message.page==1 %} disabled {% endif %}><span class="page-link">First</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a href="{{ url_for('admin_message.message', page=message.prev_num) }}"
+          {% if message.page==1 %} disabled {% endif %}><span class="page-link">Previous</span>
+          </a>
+        </li>
+    <!-- loop pange number -->
+    {% for page_num in message.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+
+    {% if page_num %}
+    <!-- check the active page and set link to active-->
+      {% if message.page == page_num %}
+        <li class="page-link"><a href="{{ url_for('admin_message.message', page=page_num) }}" class="page-item">{{ page_num }}</a></li>
+      {% else %}
+        <li class="page-link"><a href="{{ url_for('admin_message.message', page=page_num) }}" class="page-item">{{ page_num }}</a></li>
+      {% endif %}
+    {% else %}
+      ...
+    {% endif%}
+    {% endfor %}
+      <li class="page-item">
+        <a href="{{ url_for('admin_message.message', page=message.next_num) }}"
+        {% if message.page == message.pages %} disabled {% endif %}><span class="page-link">Next</span></a>
+      </li>
+      <li class="page-item">
+        <a href="{{ url_for('admin_message.message', page=message.pages) }}"
+        {% if message.page == message.pages %} disabled {% endif %}><span class="page-link">End</span></a>
+      </li>
+    </ul>
+    <p class="text-right">Showing Page {{ message.page }} of {{ message.pages }}</p>
+    </nav> 
+  </div>
+
+</div>
+{% endblock %}

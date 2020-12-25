@@ -11,7 +11,7 @@ class MesageToSystemForm(FlaskForm):
     message_user_id = IntegerField('User', [ 
         validators.InputRequired(message='User must define')
         ])
-    message_type = SelectField(u'Tpe Message', choices=[
+    message_type = SelectField(u'Type Message', choices=[
         ('Confirm Payment'), ('Report Bug'), ('Sugestion')
         ])
     message_text = TextAreaField('Message', [

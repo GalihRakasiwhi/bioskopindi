@@ -43,6 +43,8 @@ def create_app():
     from app.views.admin.admin_ticket import bp as admin_ticket
     app.register_blueprint(admin_ticket)
 
+    from app.views.admin.admin_message import bp as admin_message
+    app.register_blueprint(admin_message)
 
 
 
