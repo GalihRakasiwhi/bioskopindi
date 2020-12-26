@@ -103,9 +103,6 @@ def booking_ticket():
         join(MovieModel). \
         join(StudioModel).all()
 
-    #word = "{B4,B5}"
-    #print(word.replace("{", "").replace("}", "").split(","))
-
     return render_template('ticket/booking_ticket.html', booking_ticket=booking_ticket)
 
 
@@ -129,10 +126,17 @@ def select_seat(id):
 
     if request.method == 'POST':
         price = 10000 * len(request.form.getlist('seats'))
+
+        ticket_get = str(request.form.getlist('seats')). \
+        replace("{", "").replace("}", ""). \
+        replace("[", "").replace("]", "").replace("'", "")
+        #word = "{B4,B5}"
+        #print(word.replace("{", "").replace("}", "").split(","))
+
         booking = BookingTicketModel(
             bticket_user_id = current_user.id,
             bticket_schedule_id = id,
-            bticket_seats_number = request.form.getlist('seats'),
+            bticket_seats_number = ticket_get,
             bticket_price = price,
             bticket_status = 'Waiting for Payment',
             bticket_added = datetime.today()

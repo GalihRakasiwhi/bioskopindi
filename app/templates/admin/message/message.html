@@ -22,7 +22,6 @@
         <th>Id</th>
         <th>Username</th>
         <th>Type</th>
-        <th>Image</th>
         <th>Satus</th>
         <th>Send Time</th>
         <th>Action</th>
@@ -34,10 +33,9 @@
         <td>{{ x[0].id }}</td>
         <td>{{ x[1].username }}</td>
         <td>{{ x[0].message_type }}</td>
-        <td>{{ x[0].message_img_url }}</td>
         <td>{{ x[0].message_status }}</td>
         <td>{{ x[0].message_send_time.strftime('%Y-%m-%d') }}</td>
-        <td><a href="detile/{{ x.id }}">Detile</a> | <a href="#/{{ x.id }}" onclick="return confirm('Are you sure to Delete message &quot;{{ x.id }}&quot; ?')">Delete</a></td>
+        <td><a href="/admin/message_detile/{{ x[0].id }}">Detile</a> | <a href="#/{{ x.id }}" onclick="return confirm('Are you sure to Delete message &quot;{{ x.id }}&quot; ?')">Delete</a></td>
       </tr>
       {% endfor %}
     </tbody>
