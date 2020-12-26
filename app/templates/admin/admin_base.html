@@ -1,12 +1,11 @@
 {% macro count_message_unread() %}
-  {% set count = 0|int %}
+  {% set ns = namespace(count = 0|int) %}
   {% for x in message.items %}
     {% if x[0].message_status == 'Unread' %}
-      {% set count = count + 1 %}
+      {% set ns.count = ns.count + 1 %}
     {% endif %}
-    {{ count }}
   {% endfor %}
-
+  {{ ns.count }}
 {% endmacro %}
 
 <!doctype html>
@@ -69,7 +68,7 @@
                       <li class="nav-item active">
                         <a class="nav-link" href="#">Notification <span class="sr-only"></span></a>
                       </li>
-                    {% else %}
+                    {% else %}  
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notification <span style="background-color: red; color: white; padding-left: 2px; padding-right: 2px;">{{ count_message_unread() }}</span></a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

@@ -1,0 +1,96 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'admin/admin_base.html' %}
+{% block title %}Message Detile {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h2>Message Detile</h2>
+            </div>
+            <div class="col-sm col align-self-end" >
+            </div>
+        </div>
+        <div>
+            <table class="table">
+                <tr>
+                    <th>ID Message</th>
+                    <td>{{ message_detile[0][0].id }}</td>
+                </tr>
+                <tr>
+                    <th>User</th>
+                    <td>{{ message_detile[0][1].username }}</td>
+                </tr>
+                <tr>
+                    <th>Type Message</th>
+                     <td>{{ message_detile[0][0].message_type }}</td>
+                </tr>
+                <tr>
+                    <th>Ticket Status</th>
+                    <td>{{ message_detile[0][2].bticket_status }}</td>
+                </tr>
+                <tr>
+                    <th>Send Time</th>
+                    <td>{{ message_detile[0][0].message_send_time.strftime('%y-%m-%d %H:%M %p') }}</td>
+                </tr>
+                <tr>
+                    <th>Text Message</th>
+                    <td>{{ message_detile[0][0].message_text|safe }}</td>
+                </tr>
+                {% if message_detile[0][0].message_type == 'Confirm Payment' %}
+	                <tr>
+	                    <th>Seats Number</th>
+	                    <td>{{ message_detile[0][2].bticket_seats_number }}</td>
+	                </tr>
+	                <tr>
+	                    <th>Price</th>
+	                    <td>{{ 'Rp {:,.0f}'.format(message_detile[0][2].bticket_price) }}</td>
+	                </tr>
+	                <tr>
+	                    <th>Message Image</th>
+	                    <td><a href="#"><img src="/{{ message_detile[0][0].message_img_url }}"
+	                    	style="width: 250px"
+	                    	data-toggle="modal"
+	                    	data-target="#ContentModalCenter"
+	                    	></a>
+	                    </td>
+	                </tr>
+	                {% if message_detile[0][2].bticket_status == 'Waiting for Payment' %}
+		                <tr>
+		                    <th>{{ form.message_payment.label }}</th>
+		                    <td>
+		                    	<form method="POST" name="message_payment" action="/admin/message_detile/{{ message_detile[0][0].id }}">
+		                    		{{ form.message_payment }}
+		                    		{{ form.submit_button }}
+		                    		{{ form.csrf_token }}
+		                    	</form>
+		                    </td>
+		                </tr>
+	                {% endif %}
+	            {% else %}
+	                <tr>
+	                    <th>Message Image</th>
+	                    <td><a href="#"><img src="/{{ message_detile[0][0].message_img_url }}"
+	                    	style="width: 250px"
+	                    	data-toggle="modal"
+	                    	data-target="#ContentModalCenter"
+	                    	></a>
+	                    </td>
+	                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ContentModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+		<img src="/{{ message_detile[0][0].message_img_url }}"
+		style="width:100%; height:100%;"
+		>
+    </div>
+  </div>
+</div>
+{% endblock %}
