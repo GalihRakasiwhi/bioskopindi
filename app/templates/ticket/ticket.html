@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% block title %}My Ticket{% endblock %}
 {% block content %}
-<div class="container-fluid" style="width: 70%">
+<div class="container-fluid" style="width: 100%">
 	<h2>My Ticket</h2>
 	<p>List of Ticket has been bought:</p>
 	<table class="table table-striped">
@@ -14,7 +14,7 @@
 		    <th>Time</th>
 		    <th>Studio</th>
 		    <th>Seat Number</th>
-		    <th>Payment</th>
+		    <th>Price</th>
 		    <th>Status</th>
 		    <th>Added</th>
 		    <th>Action</th>
@@ -29,8 +29,8 @@
 		    <td>{{ x[1].schedule_time }}</td>
 		    <td>{{ x[1].schedule_studio_id }}</td>
 		    <td>{{ x[0].ticket_seat_number }}</td>
-		    <td>{{ x[0].ticket_payment }}</td>
-		    <td>{{ x[0].ticket_status }}</td>
+		    <td>{{ 'Rp {:,.0f}'.format(x[0].ticket_price) }}</td>
+		    <td>{{ x[4].status }}</td>
 		    <td>{{ x[0].ticket_added.strftime('%Y-%m-%d\n%H:%M %p') }}</td>
 		    <td><a href="/confirm_payment/{{ x[0].id }}">Confirm</a> | <a href="#">Cancel</a></td>
 		  </tr>

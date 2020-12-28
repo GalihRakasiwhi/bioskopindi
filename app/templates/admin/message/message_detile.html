@@ -2,6 +2,7 @@
 {% extends 'admin/admin_base.html' %}
 {% block title %}Message Detile {% endblock %}
 {% block content %}
+
 <div class="container-fluid">
     <div class="container">
         <div class="row">
@@ -27,7 +28,7 @@
                 </tr>
                 <tr>
                     <th>Ticket Status</th>
-                    <td>{{ message_detile[0][2].bticket_status }}</td>
+                    <td>{{ payment_status[bticket.bticket_status-1].payment_status }}</td>
                 </tr>
                 <tr>
                     <th>Send Time</th>
@@ -40,11 +41,11 @@
                 {% if message_detile[0][0].message_type == 'Confirm Payment' %}
 	                <tr>
 	                    <th>Seats Number</th>
-	                    <td>{{ message_detile[0][2].bticket_seats_number }}</td>
+	                    <td>{{ bticket.bticket_seats_number }}</td>
 	                </tr>
 	                <tr>
 	                    <th>Price</th>
-	                    <td>{{ 'Rp {:,.0f}'.format(message_detile[0][2].bticket_price) }}</td>
+	                    <td>{{ 'Rp {:,.0f}'.format(bticket.bticket_price) }}</td>
 	                </tr>
 	                <tr>
 	                    <th>Message Image</th>
@@ -55,7 +56,7 @@
 	                    	></a>
 	                    </td>
 	                </tr>
-	                {% if message_detile[0][2].bticket_status == 'Waiting for Payment' %}
+	                {% if payment_status[bticket.bticket_status-1].id == payment_status[1].id %}
 		                <tr>
 		                    <th>{{ form.message_payment.label }}</th>
 		                    <td>

@@ -1,7 +1,7 @@
 {% macro count_message_unread() %}
   {% set ns = namespace(count = 0|int) %}
   {% for x in message.items %}
-    {% if x[0].message_status == 'Unread' %}
+    {% if x[0].message_status == message_status[0].id %}
       {% set ns.count = ns.count + 1 %}
     {% endif %}
   {% endfor %}
@@ -73,8 +73,8 @@
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notification <span style="background-color: red; color: white; padding-left: 2px; padding-right: 2px;">{{ count_message_unread() }}</span></a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         {% for x in message.items %}
-                          {% if x[0].message_status == 'Unread' %}
-                            <a class="dropdown-item" href="#">{{ x[0].message_type }} - {{ x[1].username }}</a>
+                          {% if x[0].message_status == message_status[0].id %}
+                            <a class="dropdown-item" href="/admin/message_detile/{{ x[0].id }}">{{ x[0].message_type }} - {{ x[1].username }}</a>
                           {% endif %}
                         {% endfor %}  
                       </div>

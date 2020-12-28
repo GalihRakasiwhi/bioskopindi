@@ -16,6 +16,8 @@ from app.forms.form_message_to_system import MesageToSystemForm
 from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_movie import MovieModel
 from app.models.model_booking_ticket import BookingTicketModel
+from app.models.model_payment_status import PaymentStatusModel
+from app.models.model_status import StatusModel
 from app.extensions._db import db
 from app.views.functions_plus import allowed_image, clean_tags, flash_login, m_to_h
 
@@ -34,6 +36,10 @@ def confirm_payment(id):
         return redirect(url_for('auth.login'))
 
     form = MesageToSystemForm()
+    bticket = BookingTicketModel.query.get(id)
+    payment_status = PaymentStatusModel.query.get(2)
+    StatusModel = PaymentStatusModel.query.get(1)
+
     if request.method == 'POST':
         if request.files:
             #req image
@@ -48,7 +54,7 @@ def confirm_payment(id):
                 return redirect(request.url)
             else:
                 ext = image.filename.rsplit(".", 1)[1]
-                filename = f"poster_{str(uuid.uuid4())}.{ext}"#secure_filename(image.filename)
+                filename = f"message_{str(uuid.uuid4())}.{ext}"#secure_filename(image.filename)
 
         #celaned desc and specify allowed tags
         cleaned_desc = clean_tags(request.form.get('message_text'))
@@ -59,13 +65,15 @@ def confirm_payment(id):
             message_type = request.form['message_type'],
             message_text = cleaned_desc,
             message_img_url = f"{dir_image}{filename}",
-            message_status = 'Unread',
-            message_send_time = datetime.today()
+            message_status = StatusModel.id,
+            message_send_time = datetime.today(),
+            message_bticket_id = id
         )
         #save image
         image.save(os.path.join(dir_image_real, filename))
         print('image-saved')
 
+        bticket.bticket_status = payment_status.id
         db.session.add(message)
         db.session.commit()
         flash('Send Confirm Payment Successfully', 'success')

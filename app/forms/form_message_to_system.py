@@ -20,8 +20,8 @@ class MesageToSystemForm(FlaskForm):
     message_img_url = FileField('Image', validators=[
         FileAllowed(['jpg', 'png'], 'Images only!')
         ])
-    message_status = SelectField(u'Tpe Message', choices=[
-        ('Confirm Payment'), ('Report Bug'), ('Sugestion')
+    message_status = SelectField(u'Message Status', choices=[
+        ('1', 'unread'), ('2', 'read')
         ])
     message_send_time = DateTimeField('Message Send TIme', default=datetime.today())
     submit_button = SubmitField('Send')

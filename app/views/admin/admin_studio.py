@@ -11,7 +11,7 @@ from app.forms.form_studio import StudioForm
 from app.models.model_movie import MovieModel, StudioModel
 from app.views.movies import clean_tags
 from app.views.functions_plus import flash_login, flash_login_admin
-from app.views.admin.admin_message import message_list
+from app.views.admin.admin_message import message_list, message_stat
 from app.extensions._db import db
 
 bp = Blueprint  ('admin_studio', __name__)
@@ -31,9 +31,11 @@ def studio():
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
     studio = StudioModel.query.all()
 
-    return render_template('admin/studio/studio.html', message=message, studio=studio)
+    return render_template('admin/studio/studio.html', message=message,
+        message_status=message_status, studio=studio)
 
 
 #add studio ---
@@ -51,6 +53,7 @@ def add_studio():
         return redirect(url_for('index.index'))
     
     message = message_list()
+    message_status = message_stat()
     form = StudioForm()
     
     if request.method == 'POST' and form.validate():
@@ -71,7 +74,8 @@ def add_studio():
 
         return redirect(url_for('studio.studio'))
 
-    return render_template('admin/studio/add_studio.html', form=form, message=message)
+    return render_template('admin/studio/add_studio.html', form=form, message=message,
+        message_status=message_status)
 
 #edit studio ---
 @bp.route('/admin/edit_studio/<id>', methods=['GET', 'POST'])
@@ -88,6 +92,7 @@ def edit_studio(id):
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
     form = StudioForm()
     studio = StudioModel.query.get(id)
 
@@ -107,4 +112,4 @@ def edit_studio(id):
         return redirect(url_for('studio.studio'))
 
     return render_template('admin/studio/edit_studio.html', 
-        form=form, message=message, studio=studio)
+        form=form, message=message, message_status=message_status, studio=studio)

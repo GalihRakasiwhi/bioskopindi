@@ -15,6 +15,8 @@ from app.forms.form_message_to_system import MesageToSystemForm
 from app.forms.form_message_payment import MessagePaymentForm
 from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_booking_ticket import BookingTicketModel
+from app.models.model_payment_status import PaymentStatusModel
+from app.models.model_status import StatusModel
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
 from app.extensions._db import db
@@ -49,9 +51,11 @@ def message():
     
     #join(UsersModel).all()
     message = message_list()
+    message_status = message_stat()
+
     message_notification = message_notif()
     return render_template('admin/message/message.html', message=message, 
-        message_notification=message_notification)
+        message_status=message_status)
 
 
 #message detile
@@ -69,39 +73,45 @@ def message_detile(id):
 
     #set pagination
     message = message_list()
+    message_status = message_stat()
+    message_detile = db.session.query(MessageToSystemModel, UsersModel). \
+    select_from(MessageToSystemModel).filter_by(id=id). \
+    join(UsersModel)
+    bticket = BookingTicketModel.query.get(message_detile[0][0].message_bticket_id)
+    payment_status = PaymentStatusModel.query.all()
 
     form = MessagePaymentForm()
-
-    message_detile = db.session.query(MessageToSystemModel, UsersModel, BookingTicketModel). \
-    select_from(MessageToSystemModel).filter_by(id=id). \
-    join(UsersModel).join(BookingTicketModel)
-
     
-    message_detile[0][0].message_status = 'Read'
+    message_detile[0][0].message_status = 2 #2 artinya read di tabel status
     db.session.commit()
 
     if request.method == 'POST' and form.validate():
-        message_detile[0][2].bticket_status = request.form['message_payment']
+        bticket.bticket_status = request.form['message_payment']
         
-        ticket = TicketModel.query.all()    
-        unique_ticket_code= str(uuid.uuid4())[:8] 
-        create_ticket = TicketModel(
-            ticket_code = unique_ticket_code,
-            ticket_user = current_user.id,
-            ticket_schedule = request.form['ticket_schedule'],
-            ticket_seat_number = request.form['ticket_seat_number'],
-            ticket_payment = 'Waiting for Payment',
-            ticket_added = datetime.today()
-        )
-        
-        db.session.add(create_ticket)
+        status = StatusModel.query.get(1)
+        seats = bticket.bticket_seats_number.split(',')
+
+        for x in seats:
+            unique_ticket_code= str(uuid.uuid4())[:8] 
+            create_ticket = TicketModel(
+                ticket_code = unique_ticket_code,
+                ticket_user = bticket.bticket_user_id,
+                ticket_schedule = bticket.bticket_schedule_id,
+                ticket_seat_number = x,
+                ticket_price = bticket.bticket_price/len(seats),
+                ticket_status = status.id,
+                ticket_added = datetime.today()
+            )
+            db.session.add(create_ticket)
+
         db.session.commit()
         flash('Action to Message Payment Successfully', 'success')
 
         return redirect(url_for('admin_message.message'))
 
-    return render_template('admin/message/message_detile.html', form=form,
-        message=message, message_detile=message_detile)
+    return render_template('admin/message/message_detile.html', bticket=bticket,
+        form=form, message=message, message_detile=message_detile, 
+        message_status=message_status, payment_status=payment_status)
 
 
 
@@ -118,9 +128,14 @@ def message_list():
     
     return message
 
+def message_stat():
+    message_status = StatusModel.query.all()
+    
+    return message_status
+
 def message_notif():
 
-    message = db.session.query(MessageToSystemModel, UsersModel). \
+    message = db.session.query(MessageToSystemModel, UsersModel, StatusModel, PaymentStatusModel). \
     select_from(MessageToSystemModel).order_by(MessageToSystemModel.message_send_time.desc()). \
     join(UsersModel).all()
     
