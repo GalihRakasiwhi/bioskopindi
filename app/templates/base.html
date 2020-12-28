@@ -1,3 +1,13 @@
+{% macro count_message_unread() %}
+  {% set ns = namespace(count = 0|int) %}
+  {% for x in message_ticket %}
+    {% if x[0].ticket_status == status[0].id %}
+      {% set ns.count = ns.count + 1 %}
+    {% endif %}
+  {% endfor %}
+  {{ ns.count }}
+{% endmacro %}
+
 <!doctype html>
 <title>{% block title %}{% endblock %} - BioskopIndi</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
@@ -14,7 +24,6 @@
     {% for message in get_flashed_messages() %}
         <div class="alert alert-info" style="text-align: center;">{{ message }}</div>
     {% endfor %}
-
 
 
     <body style="background:#eaecee;">
@@ -56,9 +65,22 @@
                   </ul>
 
                   <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    {% if count_message_unread()|int == 0 %}
                     <li class="nav-item active">
-                      <a class="nav-link" href="/">Notification <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="#">Notification <span class="sr-only">(current)</span></a>
                     </li>
+                    {% else %}
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notification <span style="background-color: red; color: white; padding-left: 2px; padding-right: 2px;">{{ count_message_unread() }}</span></a>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        {% for x in message_ticket %}
+                          {% if x[0].ticket_status == status[0].id %}
+                            <a class="dropdown-item" href="/ticket_detile/{{ x[0].id }}">Ticket Id:{{ x[0].id }} - {{ x[3].movie_title }}</a>
+                          {% endif %}
+                        {% endfor %}  
+                      </div>
+                    </li>
+                    {% endif %}
                     {% if current_user.is_authenticated %}
                     {% if current_user.user_role[0].role_id == 1 %}
                     <li class="nav-item active">

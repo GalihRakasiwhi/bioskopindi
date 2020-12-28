@@ -35,6 +35,9 @@ def ticket():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
+    message_ticket = message_ticket_list()
+    status = message_stat()
+
     ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel, StatusModel). \
         select_from(TicketModel).filter_by(ticket_user=current_user.id). \
         order_by(TicketModel.ticket_added.asc()). \
@@ -43,51 +46,8 @@ def ticket():
         join(StudioModel). \
         join(StatusModel).all()
 
-    return render_template('ticket/ticket.html', ticket=ticket)
-
-#buy ticket ---
-@bp.route('/buy_ticket/<id>', methods=['GET', 'POST'])
-#@login_required
-def buy_ticket(id):
-    #check auth
-    if not current_user.is_authenticated:
-        flash_login()
-        return redirect(url_for('auth.login'))
-
-    form = TicketForm()
-
-    ticket = TicketModel.query.all()
-    schedule = ScheduleModel.query.all()
-    schedule_get = ScheduleModel.query.get(id)
-    movies = MovieModel.query.get(id)
-
-    schedule = db.session.query(ScheduleModel, MovieModel, StudioModel). \
-        select_from(ScheduleModel). \
-        order_by(ScheduleModel.schedule_date.asc()). \
-        join(MovieModel).filter_by(id=id). \
-        join(StudioModel).all()
-    
-    #schedule[0][1].movie_title
-
-    if request.method == 'POST':
-        unique_ticket_code= str(uuid.uuid4())[:8] 
-        buy = TicketModel(
-            ticket_code = unique_ticket_code,
-            ticket_user = current_user.id,
-            ticket_schedule = request.form['ticket_schedule'],
-            ticket_seat_number = request.form['ticket_seat_number'],
-            ticket_payment = 'Waiting for Payment',
-            ticket_added = datetime.today()
-        )
-        
-        db.session.add(buy)
-        db.session.commit()
-        return redirect(url_for('index.index'))
-
-    return render_template(
-    	'ticket/buy_ticket.html',
-    	form=form, movies=movies, schedule=schedule, schedule_get=schedule_get
-    	)
+    return render_template('ticket/ticket.html', message_ticket=message_ticket,
+        status=status, ticket=ticket)
 
 
 #ticket ---
@@ -99,6 +59,9 @@ def booking_ticket():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
+    message_ticket = message_ticket_list()
+    status = message_stat()
+
     booking_ticket = db.session.query(BookingTicketModel, ScheduleModel, MovieModel, StudioModel, PaymentStatusModel). \
         select_from(BookingTicketModel).filter_by(bticket_user_id=current_user.id). \
         order_by(BookingTicketModel.bticket_added.asc()). \
@@ -107,13 +70,22 @@ def booking_ticket():
         join(StudioModel). \
         join(PaymentStatusModel).all()
 
-    return render_template('ticket/booking_ticket.html', booking_ticket=booking_ticket)
+    return render_template('ticket/booking_ticket.html', booking_ticket=booking_ticket,
+        message_ticket=message_ticket, status=status)
 
 
 #Select Seat
 @bp.route('/select_seat/<id>', methods=['GET', 'POST'])
 #@login_required
 def select_seat(id):
+    #set auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+
+    message_ticket = message_ticket_list()
+    status = message_stat()
+
     form = BookingTicketorm()
 
     ticket = TicketModel.query.all()
@@ -150,7 +122,54 @@ def select_seat(id):
         return redirect(url_for('index.index'))
 
     return render_template(
-        'ticket/seat.html', form=form, movies=movies,
-        schedule=schedule, schedule_get=schedule_get
+        'ticket/seat.html', form=form, message_ticket=message_ticket, movies=movies,
+        schedule=schedule, schedule_get=schedule_get, status=status
         )
 
+
+#Ticket Detile
+@bp.route('/ticket_detile/<id>', methods=['GET', 'POST'])
+#@login_required
+def ticket_detile(id):
+    #set auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+
+    message_ticket = message_ticket_list()
+    status = message_stat()
+
+    ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel). \
+        select_from(TicketModel).filter_by(id=id). \
+        join(ScheduleModel). \
+        join(MovieModel). \
+        join(StudioModel).first()
+
+    ticket[0].ticket_status = 2
+    db.session.commit()
+
+    return render_template('ticket/ticket_detile.html', message_ticket=message_ticket,
+        status=status, ticket=ticket)
+
+
+def message_ticket_list():
+    #set auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+
+    message_ticket = db.session.query(TicketModel, ScheduleModel, UsersModel, MovieModel). \
+    select_from(TicketModel).order_by(TicketModel.ticket_added.desc()). \
+    join(ScheduleModel).join(UsersModel).join(MovieModel).all()
+
+    return message_ticket
+
+def message_stat():
+    #set auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+
+    status = StatusModel.query.all()
+
+    return status

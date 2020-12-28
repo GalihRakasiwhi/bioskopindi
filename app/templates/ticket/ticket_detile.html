@@ -1,0 +1,30 @@
+{% from 'auths/form_helper.html' import displayField %}
+{% extends 'base.html' %}
+{% block title %}Ticket {% endblock %}
+{% block content %}
+<div class="container-fluid" style="width: 40%; max-width: 450px">
+<div class="card text-center">
+  <div class="card-header">
+    BIOSKOPINDI
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Ticket Code:</h5>
+    <p><div style="background-color:  #d6eaf8; padding-top: 10px; padding-bottom: 10px">
+    	<h1>
+    		<strong>{{ ticket[0].ticket_code }}</strong>
+    	</h1>
+    </div></p>
+    <p>Movie:<br/><span style="font-size: 30px"><strong>{{ ticket[2].movie_title }}</strong></span></p>
+	<p>Schedule:<br/><span style="font-size: 20px"><strong>{{ ticket[1].schedule_date }}<br/>{{ ticket[1].schedule_time.strftime('%H:%M %p') }}</strong></span></p>
+	<p>Studio:<br/><span style="font-size: 20px"><strong>{{ ticket[3].studio_name }}</strong></span></p>
+	<p>Seat:<br/><span style="font-size: 20px"><strong>{{ ticket[0].ticket_seat_number }}</strong></span></p>
+	<p>Price:<br/><span style="font-size: 20px"><strong>{{ 'Rp {:,.0f}'.format(ticket[0].ticket_price) }}</strong></span></p>
+    <p class="card-text">Thank you for the purchase.<br/>Visit:<br/>{{ request.url_root }}</p>
+  </div>
+  <div class="card-footer text-muted">
+    ID: {{ ticket[0].id }}
+  </div>
+</div>
+
+</div>
+{% endblock %}

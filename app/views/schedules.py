@@ -16,6 +16,7 @@ from app.models.model_ticket import TicketModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_ticket import TicketModel
 from app.extensions._db import db
+from app.views.ticket import message_ticket_list, message_stat
 
 bp = Blueprint  ('schedule', __name__)
 
@@ -28,10 +29,13 @@ def schedule():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
+    message_ticket = message_ticket_list()
+    status = message_stat()
     schedule = db.session.query(ScheduleModel, MovieModel, StudioModel). \
     select_from(ScheduleModel).join(MovieModel).join(StudioModel).all()
 
-    return render_template('schedule/schedule.html', schedule=schedule)
+    return render_template('schedule/schedule.html', message_ticket=message_ticket,
+        schedule=schedule, status=status)
 
 
 #select schedule
@@ -42,6 +46,9 @@ def select_schedule(id):
     if not current_user.is_authenticated:
         flash_login()
         return redirect(url_for('auth.login'))
+
+    message_ticket = message_ticket_list()
+    status = message_stat()
 
     form = TicketForm()
 
@@ -73,91 +80,6 @@ def select_schedule(id):
 
     return render_template(
         'schedule/select_schedule.html',
-        form=form, movies=movies, schedule=schedule, schedule_get=schedule_get
-        )
+        form=form, message_ticket=message_ticket, movies=movies, 
+        schedule=schedule, schedule_get=schedule_get, status=status)
 
-
-
-
-
-
-#add schedule ---
-@bp.route('/add_schedule', methods=['GET', 'POST'])
-#@login_required
-def add_schedule():
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
-    form = ScheduleForm()
-    movies = MovieModel.query.all()
-    studio = StudioModel.query.all()
-
-    if request.method == 'POST':
-
-        schedule = ScheduleModel(
-            schedule_movie_id = request.form['schedule_movie_id'],
-            schedule_studio_id = request.form['schedule_studio_id'],
-            schedule_date = request.form['schedule_date'],
-            schedule_time = request.form['schedule_time'],
-            schedule_added = datetime.today()
-        )
-
-        db.session.add(schedule)
-        db.session.commit()
-
-        return redirect(url_for('schedule.schedule'))
-
-    return render_template('admin/schedules/add_schedule.html', form=form, movies=movies, studio=studio)
-
-
-#Edit Schedule ---
-@bp.route('/edit_schedule/<id>', methods=['GET', 'POST'])
-#@login_required
-def edit_schedule(id):
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
-    form = ScheduleForm()
-    movies = MovieModel.query.all()
-    studio = StudioModel.query.all()
-    schedule = ScheduleModel.query.get(id)
-
-    if request.method == 'POST':
-        schedule.schedule_movie_id = request.form['schedule_movie_id'],
-        schedule.schedule_studio_id = request.form['schedule_studio_id'],
-        schedule.schedule_date = request.form['schedule_date'],
-        schedule.schedule_time = request.form['schedule_time'],
-    
-        db.session.commit()
-        flash('Edit Schedule Successfully', 'success')
-
-        return redirect(url_for('schedule.schedule'))
-
-    return render_template('admin/schedules/edit_schedule.html',
-        form=form, movies=movies, studio=studio, schedule=schedule
-        )
-
-
-#Delete Schedule ---
-@bp.route('/delete_schedule/<id>', methods=['GET', 'POST'])
-#@login_required
-def delete_schedule(id):
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
-    schedule = ScheduleModel.query.get(id)
-    
-    #delete schedule
-    db.session.delete(schedule)
-    db.session.commit()
-    print('schedule Deleted')
-
-    flash('Delete Schedule Successfully', 'success')
-
-    return redirect(url_for('schedule.schedule'))
