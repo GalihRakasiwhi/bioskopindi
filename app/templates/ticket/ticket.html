@@ -32,7 +32,7 @@
 		    <td>{{ 'Rp {:,.0f}'.format(x[0].ticket_price) }}</td>
 		    <td>{{ x[4].status }}</td>
 		    <td>{{ x[0].ticket_added.strftime('%Y-%m-%d\n%H:%M %p') }}</td>
-		    <td><a href="/confirm_payment/{{ x[0].id }}">Confirm</a> | <a href="#">Cancel</a></td>
+		    <td><a href="/ticket_detile/{{ x[0].id }}">Detile</a></td>
 		  </tr>
 		 {% endfor %}
 		</tbody>

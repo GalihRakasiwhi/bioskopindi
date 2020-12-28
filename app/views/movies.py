@@ -15,7 +15,7 @@ from app.forms.form_movies import MoviesForm
 from app.models.model_movie import MovieModel
 from app.extensions._db import db
 from app.views.functions_plus import allowed_image, clean_tags, m_to_h
-
+from app.views.ticket import message_ticket_list, message_stat
 
 bp = Blueprint  ('movie', __name__)
 
@@ -31,19 +31,25 @@ def movies():
         return redirect(url_for('auth.login'))
 
     movies = MovieModel.query.all()
-
-    return render_template('/movies/all_movies.html', movies=movies)
+    message_ticket = message_ticket_list()
+    status = message_stat()
+    return render_template('/movies/all_movies.html', message_ticket=message_ticket,
+        movies=movies, status=status)
 
 
 @bp.route('/detile/<id>', methods=['GET', 'POST'])
 #@login_required
 def detile(id):
+    message_ticket = message_ticket_list()
+    status = message_stat()
     form = MoviesForm()
     movies = MovieModel.query.get(id)
     db_date_release = str(movies.movie_released).split()
     db_duration = m_to_h(int(movies.movie_duration))
 
-    return render_template('movies/movie_detile.html', movies=movies, form=form, db_date_release=db_date_release, db_duration=db_duration)
+    return render_template('movies/movie_detile.html', db_date_release=db_date_release, 
+        db_duration=db_duration, form=form, message_ticket=message_ticket, movies=movies,
+        status=status)
 
 @bp.route('/upcoming', methods=['GET', 'POST'])
 def upcoming():
@@ -52,6 +58,9 @@ def upcoming():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
+    message_ticket = message_ticket_list()
+    status = message_stat()
     movies = MovieModel.query.all()
 
-    return render_template('/movies/upcoming.html', movies=movies)
+    return render_template('/movies/upcoming.html', message_ticket=message_ticket,
+        movies=movies, status=status)

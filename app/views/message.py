@@ -20,7 +20,7 @@ from app.models.model_payment_status import PaymentStatusModel
 from app.models.model_status import StatusModel
 from app.extensions._db import db
 from app.views.functions_plus import allowed_image, clean_tags, flash_login, m_to_h
-
+from app.views.ticket import message_ticket_list, message_stat
 
 bp = Blueprint  ('message', __name__)
 
@@ -34,6 +34,9 @@ def confirm_payment(id):
     if not current_user.is_authenticated:
         flash_login()
         return redirect(url_for('auth.login'))
+
+    message_ticket = message_ticket_list()
+    status = message_stat()
 
     form = MesageToSystemForm()
     bticket = BookingTicketModel.query.get(id)
@@ -79,5 +82,6 @@ def confirm_payment(id):
         flash('Send Confirm Payment Successfully', 'success')
 
         return redirect(url_for('index.index'))
-    return render_template('message/confirm_payment.html', form=form, id=id)
+    return render_template('message/confirm_payment.html', form=form, id=id,
+        message_ticket=message_ticket, status=status)
 
