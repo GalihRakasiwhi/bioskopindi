@@ -22,7 +22,7 @@
         <th>Id</th>
         <th>Username</th>
         <th>Type</th>
-        <th>Satus</th>
+        <th>Status</th>
         <th>Send Time</th>
         <th>Action</th>
       </tr>
@@ -33,7 +33,7 @@
         <td>{{ x[0].id }}</td>
         <td>{{ x[1].username }}</td>
         <td>{{ x[0].message_type }}</td>
-        <td>{{ x[0].message_status }}</td>
+        <td>{{ message_status[x[0].message_status|int-1].status }}</td>
         <td>{{ x[0].message_send_time.strftime('%Y-%m-%d') }}</td>
         <td><a href="/admin/message_detile/{{ x[0].id }}">Detile</a> | <a href="#/{{ x.id }}" onclick="return confirm('Are you sure to Delete message &quot;{{ x.id }}&quot; ?')">Delete</a></td>
       </tr>

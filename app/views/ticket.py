@@ -15,6 +15,8 @@ from app.forms.form_studio import StudioForm
 from app.forms.form_ticket import TicketForm
 from app.forms.form_movies import MoviesForm
 from app.forms.form_booking_ticket import BookingTicketorm
+from app.models.model_payment_status import PaymentStatusModel
+from app.models.model_status import StatusModel
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
@@ -33,12 +35,13 @@ def ticket():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
-    ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel). \
+    ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel, StatusModel). \
         select_from(TicketModel).filter_by(ticket_user=current_user.id). \
         order_by(TicketModel.ticket_added.asc()). \
         join(ScheduleModel). \
         join(MovieModel). \
-        join(StudioModel).all()
+        join(StudioModel). \
+        join(StatusModel).all()
 
     return render_template('ticket/ticket.html', ticket=ticket)
 
@@ -96,12 +99,13 @@ def booking_ticket():
         flash('Please login!', 'danger')
         return redirect(url_for('auth.login'))
 
-    booking_ticket = db.session.query(BookingTicketModel, ScheduleModel, MovieModel, StudioModel). \
+    booking_ticket = db.session.query(BookingTicketModel, ScheduleModel, MovieModel, StudioModel, PaymentStatusModel). \
         select_from(BookingTicketModel).filter_by(bticket_user_id=current_user.id). \
         order_by(BookingTicketModel.bticket_added.asc()). \
         join(ScheduleModel). \
         join(MovieModel). \
-        join(StudioModel).all()
+        join(StudioModel). \
+        join(PaymentStatusModel).all()
 
     return render_template('ticket/booking_ticket.html', booking_ticket=booking_ticket)
 
@@ -116,6 +120,7 @@ def select_seat(id):
     schedule = ScheduleModel.query.all()
     schedule_get = ScheduleModel.query.get(id)
     movies = MovieModel.query.get(id)
+    payment_status = PaymentStatusModel.query.get(1)
 
     schedule = db.session.query(ScheduleModel, MovieModel, StudioModel). \
         select_from(ScheduleModel).filter_by(id=id). \
@@ -123,30 +128,25 @@ def select_seat(id):
         join(MovieModel). \
         join(StudioModel).all()
 
-
     if request.method == 'POST':
         price = 10000 * len(request.form.getlist('seats'))
 
         ticket_get = str(request.form.getlist('seats')). \
         replace("{", "").replace("}", ""). \
-        replace("[", "").replace("]", "").replace("'", "")
-        #word = "{B4,B5}"
-        #print(word.replace("{", "").replace("}", "").split(","))
+        replace("[", "").replace("]", ""). \
+        replace("'", "").replace(" ", "")
 
         booking = BookingTicketModel(
             bticket_user_id = current_user.id,
             bticket_schedule_id = id,
             bticket_seats_number = ticket_get,
             bticket_price = price,
-            bticket_status = 'Waiting for Payment',
+            bticket_status = payment_status.id,
             bticket_added = datetime.today()
         )
         
         db.session.add(booking)
         db.session.commit()
-        print("schedule id: "+id)
-        print(price)
-        print(request.form.getlist('seats'))    
         return redirect(url_for('index.index'))
 
     return render_template(

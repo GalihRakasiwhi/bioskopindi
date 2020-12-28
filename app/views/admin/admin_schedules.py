@@ -14,7 +14,7 @@ from app.forms.form_schedule import ScheduleForm
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_ticket import TicketModel
 from app.views.functions_plus import flash_login, flash_login_admin
-from app.views.admin.admin_message import message_list
+from app.views.admin.admin_message import message_list, message_stat
 from app.extensions._db import db
 
 bp = Blueprint  ('admin_schedule', __name__)
@@ -34,10 +34,12 @@ def schedule():
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
     schedule = db.session.query(ScheduleModel, MovieModel, StudioModel). \
     select_from(ScheduleModel).join(MovieModel).join(StudioModel).all()
 
-    return render_template('admin/schedules/schedule.html', message=message, schedule=schedule)
+    return render_template('admin/schedules/schedule.html', message=message, 
+        message_status=message_status, schedule=schedule)
 
 
 #add schedule ---
@@ -55,6 +57,7 @@ def add_schedule():
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
     form = ScheduleForm()
     movies = MovieModel.query.all()
     studio = StudioModel.query.all()
@@ -74,7 +77,8 @@ def add_schedule():
         return redirect(url_for('admin_schedule.schedule'))
 
     return render_template('admin/schedules/add_schedule.html', 
-        form=form, message=message, movies=movies, studio=studio)
+        form=form, message=message, message_status=message_status, 
+        movies=movies, studio=studio)
 
 
 #Edit Schedule ---
@@ -92,6 +96,7 @@ def edit_schedule(id):
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
     form = ScheduleForm()
     movies = MovieModel.query.all()
     studio = StudioModel.query.all()
@@ -109,8 +114,8 @@ def edit_schedule(id):
         return redirect(url_for('admin_schedule.schedule'))
 
     return render_template('admin/schedules/edit_schedule.html',
-        form=form, message=message, movies=movies, studio=studio, schedule=schedule
-        )
+        form=form, message=message, message_status=message_status, 
+        movies=movies, studio=studio, schedule=schedule)
 
 
 #Delete Schedule ---

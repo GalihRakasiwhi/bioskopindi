@@ -15,7 +15,7 @@ from app.forms.form_movies import MoviesForm
 from app.models.model_movie import MovieModel
 from app.extensions._db import db
 from app.views.functions_plus import allowed_image, clean_tags, flash_login, flash_login_admin, m_to_h
-from app.views.admin.admin_message import message_list
+from app.views.admin.admin_message import message_list, message_stat
 
 bp = Blueprint  ('admin_movies', __name__)
 
@@ -37,7 +37,7 @@ def movies():
         return redirect(url_for('index.index'))
 
     message = message_list()
-
+    message_status = message_stat()
     #set pagination
     page = request.args.get('page', 1, type=int)
 
@@ -46,7 +46,8 @@ def movies():
 
     #movies = MovieModel.query.all()
 
-    return render_template('admin/movies/movies.html', movies=movies, message=message)
+    return render_template('admin/movies/movies.html', movies=movies, message=message, 
+        message_status=message_status)
 
 #add Movies ---
 @bp.route('/admin/add_movies', methods=['GET', 'POST'])
@@ -63,7 +64,7 @@ def add_movies():
         return redirect(url_for('index.index'))
 
     message = message_list()
-
+    message_status = message_stat()
     form = MoviesForm()
 
     if request.method == 'POST':
@@ -114,7 +115,8 @@ def add_movies():
         flash('Adding Movie Successfully', 'success')
 
         return redirect(url_for('admin_movies.movies'))
-    return render_template('admin/movies/add_movies.html', form=form, message=message)
+    return render_template('admin/movies/add_movies.html', form=form, message=message,
+        message_status=message_status)
 
 
 #Edit Movies ---
@@ -132,7 +134,7 @@ def edit_movies(id):
         return redirect(url_for('index.index'))
     
     message = message_list()
-
+    message_status = message_stat()
     form = MoviesForm()
     movies = MovieModel.query.get(id)
     #get value onshow
@@ -196,9 +198,8 @@ def edit_movies(id):
     return render_template(
         'admin/movies/edit_movies.html', db_date_release=db_date_release, 
         form=form, is_onshow=is_onshow, is_upcoming=is_upcoming, 
-        onshow_data=onshow_data, message=message, movies=movies, 
-        upcoming_data=upcoming_data
-        )
+        onshow_data=onshow_data, message=message, message_status=message_status, 
+        movies=movies, upcoming_data=upcoming_data)
 
 #Delete Movies ---
 @bp.route('/admin/delete_movies/<id>', methods=['GET', 'POST'])
@@ -232,13 +233,13 @@ def delete_movies(id):
 #@login_required
 def detile(id):
     message = message_list()
-
+    message_status = message_stat()
     form = MoviesForm()
     movies = MovieModel.query.get(id)
     db_date_release = str(movies.movie_released).split()
     db_duration = m_to_h(int(movies.movie_duration))
 
     return render_template('/admin/movies/detile.html', 
-        message=message, movies=movies, form=form, 
+        message=message, message_status=message_status, movies=movies, form=form, 
         db_date_release=db_date_release, db_duration=db_duration
         )

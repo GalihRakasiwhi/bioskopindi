@@ -16,7 +16,7 @@ from app.models.model_users_roles import UsersRolesModel
 from app.models.model_message_to_system import MessageToSystemModel
 from app.extensions._db import db
 from app.views.functions_plus import flash_login, flash_login_admin, allowed_image
-from app.views.admin.admin_message import message_list
+from app.views.admin.admin_message import message_list, message_stat
 
 bp = Blueprint  ('admin_auth', __name__)
 
@@ -102,6 +102,10 @@ def edit_account():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
+    message = message_list()
+    message_status = message_stat()
+
+
     if request.method == 'POST' and form.validate():
         user_object = UsersModel.query.filter_by(username=current_user.username).first()
         user_object.username = request.form['username'],
@@ -111,7 +115,8 @@ def edit_account():
         db.session.commit()
         return redirect(url_for('admin_auth.account'))
     
-    return render_template('account/edit_account.html', form=form)
+    return render_template('account/edit_account.html', form=form, message=message,
+        message_status=message_status)
 
 
 #User---
@@ -129,12 +134,14 @@ def users():
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
 
     #user_object = UsersModel.query.all()
     user_object = db.session.query(UsersModel, UsersRolesModel, RolesModel). \
     select_from(UsersModel).join(UsersRolesModel).join(RolesModel).all()
 
-    return render_template('admin/auth/users.html', message=message, user_object=user_object)
+    return render_template('admin/auth/users.html', message=message, 
+        message_status=message_status, user_object=user_object)
 
 
 
@@ -152,10 +159,13 @@ def roles():
         return redirect(url_for('index.index'))
 
     message = message_list()
+    message_status = message_stat()
+
     form = AdminRolesForm()
     roles = RolesModel.query.all()
 
-    return render_template('admin/auth/roles.html', form=form, message=message, roles=roles)
+    return render_template('admin/auth/roles.html', form=form, message=message, 
+        message_status=message_status, roles=roles)
 
 
 #Add Roles
@@ -167,6 +177,7 @@ def add_roles():
         return redirect(url_for('auth.login'))
 
     message = message_list()
+    message_status = message_stat()
 
     form = AdminRolesForm()
 
@@ -179,7 +190,8 @@ def add_roles():
 
         return redirect(url_for('admin_auth.roles'))
 
-    return render_template('admin/auth/add_roles.html', form=form, message=message)
+    return render_template('admin/auth/add_roles.html', form=form, message=message,
+        message_status=message_status)
 
 #Add Roles
 @bp.route('/admin/edit_roles/<id>', methods=['GET', 'POST'])
@@ -190,6 +202,7 @@ def edit_roles(id):
         return redirect(url_for('auth.login'))
 
     message = message_list()
+    message_status = message_stat()
 
     form = AdminRolesForm()
     roles = RolesModel.query.get(id)
@@ -200,7 +213,8 @@ def edit_roles(id):
 
         return redirect(url_for('admin_auth.roles'))
 
-    return render_template('admin/auth/edit_roles.html', form=form, message=message, roles=roles)
+    return render_template('admin/auth/edit_roles.html', form=form, message=message, 
+        message_status=message_status, roles=roles)
 
 
 #Delete Roles

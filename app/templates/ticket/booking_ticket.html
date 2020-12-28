@@ -35,11 +35,11 @@
       <tr>
         <td>{{ x[0].id }}</td>
         <td>{{ x[2].movie_title }}</td>
-        <td>{{ x[1].schedule_date }}<br>{{ x[1].schedule_time }}</td>
+        <td>{{ x[1].schedule_date }}<br>{{ x[1].schedule_time.strftime('%H:%M %p') }}</td>
         <td>{{ x[3].studio_name }}</td>
         <td>{{ x[0].bticket_seats_number }}</td>
         <td>{{ 'Rp {:,.0f}'.format(x[0].bticket_price) }}</td>
-        <td>{{ x[0].bticket_status }}</td>
+        <td>{{ x[4].payment_status }}</td>
         <td>
           {{ x[0].bticket_added.strftime('%y-%m-%d') }}<br>
           {{ x[0].bticket_added.strftime('%H:%M %p') }}

@@ -8,8 +8,9 @@ class BookingTicketModel(db.Model):
     bticket_schedule_id = db.Column(db.Integer, db.ForeignKey('tblSchedules.id'), nullable=False)
     bticket_seats_number = db.Column(db.Text, nullable=False)
     bticket_price = db.Column(db.Float, nullable=False)
-    bticket_status = db.Column(db.String, nullable=False)
+    bticket_status = db.Column(db.Integer, db.ForeignKey('tblPaymentStatus.id'), nullable=False)
     bticket_added = db.Column(db.DateTime, nullable=False)
+    bticket_message = db.relationship('MessageToSystemModel', backref='tblBookingTicket', lazy=True)
 
     def __repr(self):
         return f"<BookingTicketModel {self.id}>"
