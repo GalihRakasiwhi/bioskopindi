@@ -37,7 +37,6 @@ def ticket():
 
     message_ticket = message_ticket_list()
     status = message_stat()
-
     ticket = db.session.query(TicketModel, ScheduleModel, MovieModel, StudioModel, StatusModel). \
         select_from(TicketModel).filter_by(ticket_user=current_user.id). \
         order_by(TicketModel.ticket_added.asc()). \
@@ -61,7 +60,7 @@ def booking_ticket():
 
     message_ticket = message_ticket_list()
     status = message_stat()
-
+    payment_status = PaymentStatusModel.query.all()
     booking_ticket = db.session.query(BookingTicketModel, ScheduleModel, MovieModel, StudioModel, PaymentStatusModel). \
         select_from(BookingTicketModel).filter_by(bticket_user_id=current_user.id). \
         order_by(BookingTicketModel.bticket_added.asc()). \
@@ -71,7 +70,7 @@ def booking_ticket():
         join(PaymentStatusModel).all()
 
     return render_template('ticket/booking_ticket.html', booking_ticket=booking_ticket,
-        message_ticket=message_ticket, status=status)
+        message_ticket=message_ticket, payment_status=payment_status, status=status)
 
 
 #Select Seat
@@ -88,7 +87,16 @@ def select_seat(id):
 
     form = BookingTicketorm()
 
-    ticket = TicketModel.query.all()
+    ticket = TicketModel.query.filter_by(ticket_schedule=id)
+    bticket = BookingTicketModel.query.filter_by(bticket_schedule_id=id)
+    list_seat = []
+    for x in bticket:
+        list_seat.append(x.bticket_seats_number)
+    
+    bticket_list = str(list_seat). \
+        replace("[", "").replace("]", ""). \
+        replace("'", "").replace(" ", "").split(',')
+
     schedule = ScheduleModel.query.all()
     schedule_get = ScheduleModel.query.get(id)
     movies = MovieModel.query.get(id)
@@ -122,9 +130,8 @@ def select_seat(id):
         return redirect(url_for('index.index'))
 
     return render_template(
-        'ticket/seat.html', form=form, message_ticket=message_ticket, movies=movies,
-        schedule=schedule, schedule_get=schedule_get, status=status
-        )
+        'ticket/seat.html', bticket_list=bticket_list, form=form, message_ticket=message_ticket,
+        movies=movies, schedule=schedule, schedule_get=schedule_get, status=status, ticket=ticket)
 
 
 #Ticket Detile

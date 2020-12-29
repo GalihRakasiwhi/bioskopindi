@@ -6,11 +6,14 @@
 
 {% endblock %}
 {% block content %}
+
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/custom.css') }}">
 <div class="container-fluid" align="center">
     
     <form method="POST" accept="/select_seat/{{ schedule[0][0].id }}">
-    <table border="0">
+    {% set column = 8 %}
+    {% set row = 8 %}
+    <table border="0" class="table_seat">
       <tr>
         <td colspan="9">
             <div align="left">
@@ -28,117 +31,96 @@
       </tr>
       <tr class="seatVGap"></tr>
       <tr>
-        <td></td>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td></td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
+        {% for x in range(column) %}
+            {% if x == 0 %}
+                <td></td>
+            {% else %}
+                {% if x == 3 %}
+                    <td><span style="text-align: center;">{{x}}</span></td>
+                    <td></td>
+                {% else %}
+                    <td><span style="text-align: center;">{{x}}</span></td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
     </tr>
-      
+    {% set char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+    {% for x in range(row) %}
     <tr>
-        <td>A</td>
-        <td><input type="checkbox" name="seats" value="A1"></td>
-        <td><input type="checkbox" name="seats" value="A2"></td>
-        <td><input type="checkbox" name="seats" value="A3"></td>
-        <td class="seatGap"></td>
-        <td><input type="checkbox" name="seats" value="A4"></td>
-        <td><input type="checkbox" name="seats" value="A5"></td>
-        <td><input type="checkbox" name="seats" value="A6"></td>
-        <td><input type="checkbox" name="seats" value="A7"></td>
-      </tr>
-      
-      <tr>
-        <td>B</td>
-        <td><input type="checkbox" name="seats" value="B1"></td>
-        <td><input type="checkbox" name="seats" value="B2"></td>
-        <td><input type="checkbox" name="seats" value="B3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="B4"></td>
-        <td><input type="checkbox" name="seats" value="B5"></td>
-        <td><input type="checkbox" name="seats" value="B6"></td>
-        <td><input type="checkbox" name="seats" value="B7"></td>
-      </tr>
-      
-      <tr>
-        <td>C</td>
-        <td><input type="checkbox" name="seats" value="C1"></td>
-        <td><input type="checkbox" name="seats" value="C2"></td>
-        <td><input type="checkbox" name="seats" value="C3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="C4"></td>
-        <td><input type="checkbox" name="seats" value="C5"></td>
-        <td><input type="checkbox" name="seats" value="C6"></td>
-        <td><input type="checkbox" name="seats" value="C7"></td>
+        {% for y in range(column) %}
+            {% if y == 0 %}
+                <td>{{ char[x] }}</td>
+            {% else %}
+
+                {% if y == 3 %}
+                    <td>
+                        {% set ns_seat = namespace(count = 0|int) %}
+                        {% set ns_seat_booked = namespace(count = 0|int) %}
+                        {% for z in ticket %}
+                            {% if z.ticket_seat_number == char[x]+y|string %}
+                                <label class="container_cb"><input type="checkbox" name="seats" value="{{char[x]+y|string}}"><span class="checkmark_used">{{char[x]+y|string}}</span></label>
+                                {% set ns_seat.count = ns_seat.count + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if ns_seat.count == 0 %}
+                            {% for zz in bticket_list %}
+                                {% if zz == char[x]+y|string %}
+                                    <label class="container_cb"><input type="checkbox" name="seats" value="{{char[x]+y|string}}"><span class="checkmark_booked">{{char[x]+y|string}}</span></label>
+                                    {% set ns_seat_booked.count = ns_seat_booked.count + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if ns_seat_booked.count == 0 %}
+                                <label class="container_cb"><input type="checkbox" name="seats" value="{{char[x]+y|string}}"><span class="checkmark">{{char[x]+y|string}}</span></label>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td><span class="seats"></span></td>
+                {% else %}
+                    <td>
+                        {% set ns_seat = namespace(count = 0|int) %}
+                        {% set ns_seat_booked = namespace(count = 0|int) %}
+                        {% for z in ticket %}
+                            {% if z.ticket_seat_number == char[x]+y|string %}
+                                <label class="container_cb"><input type="checkbox" name="seats" value="{{char[x]+y|string}}"><span class="checkmark_used">{{char[x]+y|string}}</span></label>
+                                {% set ns_seat.count = ns_seat.count + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if ns_seat.count == 0 %}
+                            {% for zz in bticket_list %}
+                                {% if zz == char[x]+y|string %}
+                                    <label class="container_cb"><input type="checkbox" name="seats" value="{{char[x]+y|string}}"><span class="checkmark_booked">{{char[x]+y|string}}</span></label>
+                                    {% set ns_seat_booked.count = ns_seat_booked.count + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if ns_seat_booked.count == 0 %}
+                                <label class="container_cb"><input type="checkbox" name="seats" value="{{char[x]+y|string}}"><span class="checkmark">{{char[x]+y|string}}</span></label>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
     </tr>
-      
-    <tr>
-        <td>D</td>
-        <td><input type="checkbox" name="seats" value="D1"></td>
-        <td><input type="checkbox" name="seats" value="D2"></td>
-        <td><input type="checkbox" name="seats" value="D3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="D4"></td>
-        <td><input type="checkbox" name="seats" value="D5"></td>
-        <td><input type="checkbox" name="seats" value="D6"></td>
-        <td><input type="checkbox" name="seats" value="D7"></td>
-    </tr>
-      
-    <tr>
-        <td>E</td>
-        <td><input type="checkbox" name="seats" value="E1"></td>
-        <td><input type="checkbox" name="seats" value="E2"></td>
-        <td><input type="checkbox" name="seats" value="E3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="E4"></td>
-        <td><input type="checkbox" name="seats" value="E5"></td>
-        <td><input type="checkbox" name="seats" value="E6"></td>
-        <td><input type="checkbox" name="seats" value="E7"></td>
-    </tr>
-    <tr>
-        <td>F</td>
-        <td><input type="checkbox" name="seats" value="F1"></td>
-        <td><input type="checkbox" name="seats" value="F2"></td>
-        <td><input type="checkbox" name="seats" value="F3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="F4"></td>
-        <td><input type="checkbox" name="seats" value="F5"></td>
-        <td><input type="checkbox" name="seats" value="F6"></td>
-        <td><input type="checkbox" name="seats" value="F7"></td>
-    </tr>
-      
-    <tr>
-        <td>G</td>
-        <td><input type="checkbox" name="seats" value="G1"></td>
-        <td><input type="checkbox" name="seats" value="G2"></td>
-        <td><input type="checkbox" name="seats" value="G3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="G4"></td>
-        <td><input type="checkbox" name="seats" value="G5"></td>
-        <td><input type="checkbox" name="seats" value="G6"></td>
-        <td><input type="checkbox" name="seats" value="G7"></td>
-    </tr>
-      
-    <tr>
-        <td>H</td>
-        <td><input type="checkbox" name="seats" value="H1"></td>
-        <td><input type="checkbox" name="seats" value="H2"></td>
-        <td><input type="checkbox" name="seats" value="H3"></td>
-        <td></td>
-        <td><input type="checkbox" name="seats" value="H4"></td>
-        <td><input type="checkbox" name="seats" value="H5"></td>
-        <td><input type="checkbox" name="seats" value="H6"></td>
-        <td><input type="checkbox" name="seats" value="H7"></td>
-    </tr>  
-      
+    {% endfor %}
     </table>
     <br/>
     <div>{{ form.submit_button(onclick="return confirm('Are you sure?')") }}</div>
     {{ form.csrf_token }}
     </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 

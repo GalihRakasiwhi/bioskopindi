@@ -44,7 +44,14 @@
           {{ x[0].bticket_added.strftime('%y-%m-%d') }}<br>
           {{ x[0].bticket_added.strftime('%H:%M %p') }}
         </td>
-        <td><a href="/confirm_payment/{{ x[0].id }}">Confirm Payment</a></td>
+        <td>
+          {% if x[4].payment_status == payment_status[2].payment_status %}
+          Done
+          {% else %}
+          <a href="/confirm_payment/{{ x[0].id }}">Confirm Payment</a>
+          {% endif %}
+
+        </td>
       </tr>
       {% endfor %}
     </tbody>
