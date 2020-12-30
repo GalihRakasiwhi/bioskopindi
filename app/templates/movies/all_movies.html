@@ -15,7 +15,7 @@
           <!--<div class="text-center"><a href="detile/{{ x.id }}" class="btn btn-primary">more detile</a></div>-->
           <div class="text-center">
             {% if x.movie_onshow == True %}
-            <a href="buy_ticket/{{ x.id }}" class="btn btn-success">Buy Ticket</a>
+            <a href="/select_schedule/{{ x.id }}" class="btn btn-success">Buy Ticket</a>
             {% endif %}
             <a href="detile/{{ x.id }}" class="btn btn-primary">detile</a>
           </div>

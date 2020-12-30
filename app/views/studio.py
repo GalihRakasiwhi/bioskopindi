@@ -7,11 +7,12 @@ from werkzeug.utils import secure_filename
 
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
-from app.forms.form_studio import StudioForm
+
+from app.extensions._db import db
 from app.models.model_movie import MovieModel, StudioModel
 from app.views.movies import clean_tags
-from app.extensions._db import db
 from app.views.ticket import message_ticket_list, message_stat
+from app.views.functions_plus import flash_login
 
 bp = Blueprint  ('studio', __name__)
 
@@ -19,15 +20,15 @@ bp = Blueprint  ('studio', __name__)
 @bp.route('/studio', methods=['GET', 'POST'])
 #@login_required
 def studio():
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     message_ticket = message_ticket_list()
     status = message_stat()
     studio = StudioModel.query.all()
 
-    return render_template('admin/studio/studio.html', message_ticket=message_ticket,
+    return render_template('#', message_ticket=message_ticket,
         status=status, studio=studio)
 

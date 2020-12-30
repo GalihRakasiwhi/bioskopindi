@@ -46,9 +46,10 @@
         </td>
         <td>
           {% if x[4].payment_status == payment_status[2].payment_status %}
-          Done
+            Done
           {% else %}
-          <a href="/confirm_payment/{{ x[0].id }}">Confirm Payment</a>
+            <a href="/confirm_payment/{{ x[0].id }}">Confirm Payment</a> | <a href="/delete_booking/{{ x[0].id }}" onclick="return confirm('Are you sure to Delete Booking Ticket &quot;{{ x[0].id }}&quot; ?')">Delete</a></td>
+      </tr>
           {% endif %}
 
         </td>

@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
 
+from app.extensions._db import db
 from app.forms.form_register import RegisterForm
 from app.forms.form_login import LoginForm
 from app.forms.form_edit_account import EditAccountForm
@@ -14,8 +15,7 @@ from app.models.model_roles import RolesModel
 from app.models.model_users_roles import UsersRolesModel
 from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_booking_ticket import BookingTicketModel
-from app.extensions._db import db
-from app.views.functions_plus import allowed_image
+from app.views.functions_plus import allowed_image, flash_login
 
 bp = Blueprint  ('auth', __name__)
 
@@ -24,8 +24,9 @@ bp = Blueprint  ('auth', __name__)
 @bp.route('/account', methods=['GET', 'POST'])
 #@login_required
 def account():
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     return render_template('account/account.html')
@@ -83,11 +84,12 @@ def login():
 @bp.route('/edit_account', methods=['GET', 'POST'])
 #@login_required
 def edit_account():
-    form = EditAccountForm()
-
+    #check auth
     if not current_user.is_authenticated:
-    	flash('Please login!', 'danger')
-    	return redirect(url_for('auth.login'))
+        flash_login()
+        return redirect(url_for('auth.login'))
+
+    form = EditAccountForm()
 
     if request.method == 'POST':
         user_object = UsersModel.query.filter_by(username=current_user.username).first()
