@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
 
+from app.extensions._db import db
 from app.forms.form_register import RegisterForm
 from app.forms.form_login import LoginForm
 from app.forms.form_edit_account import EditAccountForm
@@ -14,7 +15,6 @@ from app.models.model_users import UsersModel
 from app.models.model_roles import RolesModel
 from app.models.model_users_roles import UsersRolesModel
 from app.models.model_message_to_system import MessageToSystemModel
-from app.extensions._db import db
 from app.views.functions_plus import flash_login, flash_login_admin, allowed_image
 from app.views.admin.admin_message import message_list, message_stat
 

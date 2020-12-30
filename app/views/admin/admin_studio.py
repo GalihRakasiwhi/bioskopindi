@@ -4,15 +4,16 @@ from flask import (
 )
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from werkzeug.utils import secure_filename
-
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
+
+from app.extensions._db import db
 from app.forms.form_studio import StudioForm
 from app.models.model_movie import MovieModel, StudioModel
 from app.views.movies import clean_tags
 from app.views.functions_plus import flash_login, flash_login_admin
 from app.views.admin.admin_message import message_list, message_stat
-from app.extensions._db import db
+
 
 bp = Blueprint  ('admin_studio', __name__)
 

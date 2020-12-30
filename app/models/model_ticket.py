@@ -9,6 +9,7 @@ class TicketModel(db.Model):
     ticket_seat_number = db.Column(db.String(12), nullable=False)
     ticket_price = db.Column(db.Float, nullable=False)
     ticket_status = db.Column(db.Integer, db.ForeignKey('tblStatus.id'), nullable=False)
+    ticket_claimed = db.Column(db.Boolean, nullable=False)
     ticket_added = db.Column(db.DateTime, nullable=False)
 
     def __repr(self):

@@ -11,15 +11,16 @@ from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
 #from app.forms.form_message_to_system import MesageToSystemForm
+
+from app.extensions._db import db
 from app.forms.form_message_payment import MessagePaymentForm
-from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_booking_ticket import BookingTicketModel
+from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_payment_status import PaymentStatusModel
 from app.models.model_status import StatusModel
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
-from app.extensions._db import db
-from app.views.functions_plus import allowed_image, clean_tags, flash_login, flash_login_admin, m_to_h
+from app.views.functions_plus import allowed_image, clean_tags, flash_login, flash_login_admin
 
 
 bp = Blueprint  ('admin_message', __name__)
@@ -94,6 +95,7 @@ def message_detile(id):
                     ticket_seat_number = x,
                     ticket_price = bticket.bticket_price/len(seats),
                     ticket_status = status.id,
+                    ticket_claimed = False,
                     ticket_added = datetime.today()
                 )
                 db.session.add(create_ticket)
