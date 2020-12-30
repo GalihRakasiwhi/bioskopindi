@@ -7,13 +7,13 @@ from flask import (
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from passlib.hash import pbkdf2_sha256
 from werkzeug.utils import secure_filename
-
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
+
+from app.extensions._db import db
 from app.forms.form_movies import MoviesForm
 from app.models.model_movie import MovieModel
-from app.extensions._db import db
 from app.views.functions_plus import allowed_image, clean_tags, flash_login, flash_login_admin, m_to_h
 from app.views.admin.admin_message import message_list, message_stat
 

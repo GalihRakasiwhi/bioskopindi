@@ -8,14 +8,14 @@ from werkzeug.utils import secure_filename
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
-from app.views.movies import detile
-from app.forms.form_movies import MoviesForm
+
+from app.extensions._db import db
+#from app.forms.form_movies import MoviesForm
 from app.forms.form_schedule import ScheduleForm
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
-from app.models.model_ticket import TicketModel
 from app.views.functions_plus import flash_login, flash_login_admin
 from app.views.admin.admin_message import message_list, message_stat
-from app.extensions._db import db
+
 
 bp = Blueprint  ('admin_schedule', __name__)
 

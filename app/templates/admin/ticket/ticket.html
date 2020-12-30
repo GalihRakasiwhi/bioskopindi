@@ -2,7 +2,6 @@
 {% extends 'admin/admin_base.html' %}
 {% block title %}Ticket Page {% endblock %}
 {% block content %}
-
 <div class="container-fluid">
   <div class="container">
     <div class="row">
@@ -27,7 +26,7 @@
         <th>Time</th>
         <th>Studio</th>
         <th>Seat Number</th>
-        <th>Payment</th>
+        <th>Price</th>
         <th>Status</th>
         <th>Added</th>
         <th>Action</th>
@@ -41,13 +40,19 @@
         <td>{{ x[1].username }}</td>
         <td>{{ x[3].movie_title }}</td>
         <td>{{ x[2].schedule_date }}</td>
-        <td>{{ x[2].schedule_time }}</td>
+        <td>{{ x[2].schedule_time.strftime('%H:%M %p') }}</td>
         <td>{{ x[4].studio_name }}</td>
         <td>{{ x[0].ticket_seat_number }}</td>
-        <td>{{ x[0].ticket_payment }}</td>
-        <td>{{ x[0].ticket_status }}</td>
+        <td>{{ 'Rp {:,.0f}'.format(x[0].ticket_price) }}</td>
+        <td>{{ x[5].status }}</td>
         <td>{{ x[0].ticket_added.strftime('%Y-%m-%d\n%H:%M %p') }}</td>
-        <td><a href="#">Edit</a> | <a href="#" onclick="return confirm('Are you sure to Delete Studio &quot;#&quot; ?')">Delete</a></td>
+        <td>
+          {% if x[0].ticket_claimed != True %}
+          <a href="/admin/ticket_claim/{{ x[0].id }}" class="btn btn-primary" onclick="return confirm('Claim ticket &quot;{{x[0].ticket_code}}&quot; ?')">Claim</a>
+          {% else %}
+            Claimed
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>

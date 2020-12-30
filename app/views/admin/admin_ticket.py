@@ -9,6 +9,7 @@ from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from app.forms.form_studio import StudioForm
 from app.models.model_users import UsersModel
+from app.models.model_status import StatusModel
 from app.models.model_ticket import TicketModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.views.functions_plus import flash_login, flash_login_admin
@@ -33,9 +34,32 @@ def ticket():
 
     message = message_list()
     message_status = message_stat()
-    ticket = TicketModel.query.all()
-    ticket = db.session.query(TicketModel, UsersModel, ScheduleModel, MovieModel, StudioModel). \
-    select_from(TicketModel).join(UsersModel).join(ScheduleModel).join(MovieModel).join(StudioModel).all()
+    ticket = db.session.query(TicketModel, UsersModel, ScheduleModel, MovieModel, StudioModel, StatusModel). \
+    select_from(TicketModel).join(UsersModel).join(ScheduleModel).join(MovieModel).join(StudioModel). \
+    join(StatusModel).all()
     
     return render_template('admin/ticket/ticket.html', message=message, 
         message_status=message_status, ticket=ticket)
+
+
+#ticket ---
+@bp.route('/admin/ticket_claim/<id>', methods=['GET', 'POST'])
+#@login_required
+def ticket_claim(id):
+    #check auth
+    if not current_user.is_authenticated:
+        flash_login()
+        return redirect(url_for('auth.login'))
+
+    #check is admin
+    if current_user.user_role[0].role_id != 1:
+        flash_login_admin()
+        return redirect(url_for('index.index'))
+
+    ticket = TicketModel.query.get(id)
+    ticket.ticket_claimed = True
+    
+    db.session.commit()
+    flash(f'Claim Ticket "{ticket.ticket_code}" Successfully', 'success')
+    
+    return redirect(url_for('admin_ticket.ticket'))

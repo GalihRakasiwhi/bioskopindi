@@ -6,19 +6,15 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from werkzeug.utils import secure_filename
 
 from datetime import date, datetime
-from app.views.movies import detile
-from app.views.functions_plus import flash_login, flash_login_admin
+
+from app.extensions._db import db
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_ticket import TicketModel
 from app.models.model_users import UsersModel
-from app.models.model_users_admin import UsersAdminModel
-from app.models.model_roles import RolesModel
-from app.models.model_users_roles import UsersRolesModel
-from app.models.model_message_to_system import MessageToSystemModel
 from app.views.functions_plus import flash_login, flash_login_admin
 from app.views.admin.admin_message import message_list, message_stat
+from app.views.functions_plus import flash_login, flash_login_admin
 
-from app.extensions._db import db
 
 bp = Blueprint  ('admin', __name__)
 
@@ -42,7 +38,6 @@ def index():
     schedule = ScheduleModel.query.all()
     ticket = TicketModel.query.all()
     users = UsersModel.query.all()
-    #message_unread = MessageToSystemModel.query.all()
 
     message = message_list()
     message_status = message_stat()
