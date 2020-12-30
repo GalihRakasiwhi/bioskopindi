@@ -5,16 +5,16 @@ from flask import (
     Blueprint, current_app, flash, redirect, render_template, request, session, url_for
 )
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from passlib.hash import pbkdf2_sha256
 from werkzeug.utils import secure_filename
 
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
+from app.extensions._db import db
+
 from app.forms.form_movies import MoviesForm
 from app.models.model_movie import MovieModel
-from app.extensions._db import db
-from app.views.functions_plus import allowed_image, clean_tags, m_to_h
+from app.views.functions_plus import clean_tags, m_to_h, flash_login
 from app.views.ticket import message_ticket_list, message_stat
 
 bp = Blueprint  ('movie', __name__)
@@ -25,11 +25,6 @@ dir_image_real="app/static/img/poster/"
 
 @bp.route('/movies', methods=['GET', 'POST'])
 def movies():
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
     movies = MovieModel.query.all()
     message_ticket = message_ticket_list()
     status = message_stat()
@@ -53,11 +48,6 @@ def detile(id):
 
 @bp.route('/upcoming', methods=['GET', 'POST'])
 def upcoming():
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
     message_ticket = message_ticket_list()
     status = message_stat()
     movies = MovieModel.query.all()

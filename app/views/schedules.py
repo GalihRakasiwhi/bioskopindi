@@ -8,15 +8,13 @@ from werkzeug.utils import secure_filename
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
-from app.views.movies import detile
-from app.forms.form_movies import MoviesForm
-from app.forms.form_schedule import ScheduleForm
+from app.extensions._db import db
 from app.forms.form_ticket import TicketForm
 from app.models.model_ticket import TicketModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_ticket import TicketModel
-from app.extensions._db import db
 from app.views.ticket import message_ticket_list, message_stat
+from app.views.functions_plus import flash_login
 
 bp = Blueprint  ('schedule', __name__)
 
@@ -24,9 +22,9 @@ bp = Blueprint  ('schedule', __name__)
 @bp.route('/schedule', methods=['GET', 'POST'])
 #@login_required
 def schedule():
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     message_ticket = message_ticket_list()
@@ -64,18 +62,6 @@ def select_schedule(id):
         join(StudioModel).all()
 
     if request.method == 'POST':
-        #unique_ticket_code= str(uuid.uuid4())[:8] 
-#        buy = TicketModel(
-#            #ticket_code = unique_ticket_code,
-#            ticket_user = current_user.id,
-#            ticket_schedule = request.form['ticket_schedule'],
-#            ticket_seat_number = request.form['ticket_seat_number'],
-#            ticket_payment = 'Waiting for Payment',
-#            ticket_added = datetime.today()
-#        )
-        
-#        db.session.add(buy)
-#        db.session.commit()
         return redirect(url_for('ticket.select_seat', id=request.form['ticket_schedule']))
 
     return render_template(

@@ -5,13 +5,12 @@ from flask import (
     Blueprint, current_app, flash, redirect, render_template, request, session, url_for
 )
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from passlib.hash import pbkdf2_sha256
 from werkzeug.utils import secure_filename
 
 from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
-from app.forms.form_message_to_system import MesageToSystemForm
+#from app.forms.form_message_to_system import MesageToSystemForm
 from app.forms.form_message_payment import MessagePaymentForm
 from app.models.model_message_to_system import MessageToSystemModel
 from app.models.model_booking_ticket import BookingTicketModel
@@ -24,6 +23,9 @@ from app.views.functions_plus import allowed_image, clean_tags, flash_login, fla
 
 
 bp = Blueprint  ('admin_message', __name__)
+
+dir_image="static/img/message/"
+dir_image_real="app/static/img/message/"
 
 #admin message
 @bp.route('/admin/message/', methods=['GET', 'POST'])
@@ -38,18 +40,6 @@ def message():
         flash_login_admin()
         return redirect(url_for('index.index'))
 
-    #set pagination
-    page = request.args.get('page', 1, type=int)
-
-    #message = MessageToSystemModel.query.order_by(MessageToSystemModel.message_send_time.desc()). \
-    #paginate(page=page, per_page = rows_per_page). \
-
-    #message = db.session.query(MessageToSystemModel, UsersModel). \
-    #select_from(MessageToSystemModel).order_by(MessageToSystemModel.message_send_time.desc()). \
-    #join(UsersModel). \
-    #paginate(page=page, per_page = rows_per_page)
-    
-    #join(UsersModel).all()
     message = message_list()
     message_status = message_stat()
 
@@ -85,34 +75,65 @@ def message_detile(id):
     message_detile[0][0].message_status = 2 #2 artinya read di tabel status
     db.session.commit()
 
+    if bticket == None:
+        flash('Booking Ticket has been deleted by user', 'danger')
+        return redirect(url_for('admin_message.message'))
+
     if request.method == 'POST' and form.validate():
         bticket.bticket_status = request.form['message_payment']
-        
-        status = StatusModel.query.get(1)
-        seats = bticket.bticket_seats_number.split(',')
+        if payment_status[2].id == int(request.form['message_payment']):
+            status = StatusModel.query.get(1)
+            seats = bticket.bticket_seats_number.split(',')
 
-        for x in seats:
-            unique_ticket_code= str(uuid.uuid4())[:8] 
-            create_ticket = TicketModel(
-                ticket_code = unique_ticket_code,
-                ticket_user = bticket.bticket_user_id,
-                ticket_schedule = bticket.bticket_schedule_id,
-                ticket_seat_number = x,
-                ticket_price = bticket.bticket_price/len(seats),
-                ticket_status = status.id,
-                ticket_added = datetime.today()
-            )
-            db.session.add(create_ticket)
+            for x in seats:
+                unique_ticket_code= str(uuid.uuid4())[:8] 
+                create_ticket = TicketModel(
+                    ticket_code = unique_ticket_code,
+                    ticket_user = bticket.bticket_user_id,
+                    ticket_schedule = bticket.bticket_schedule_id,
+                    ticket_seat_number = x,
+                    ticket_price = bticket.bticket_price/len(seats),
+                    ticket_status = status.id,
+                    ticket_added = datetime.today()
+                )
+                db.session.add(create_ticket)
+                db.session.commit()
 
-        db.session.commit()
         flash('Action to Message Payment Successfully', 'success')
 
         return redirect(url_for('admin_message.message'))
-
+    
     return render_template('admin/message/message_detile.html', bticket=bticket,
         form=form, message=message, message_detile=message_detile, 
         message_status=message_status, payment_status=payment_status)
 
+
+#Delete Movies ---
+@bp.route('/admin/message_delete/<id>', methods=['GET', 'POST'])
+#@login_required
+def message_delete(id):
+    message = MessageToSystemModel.query.get(id)
+    
+    #user auth
+    if not current_user.is_authenticated:
+        flash('Please login!', 'danger')
+        return redirect(url_for('auth.login'))
+
+    #delete image
+    if message.message_img_url != "":  
+        message_db_url = message.message_img_url
+        filename_in_db = message_db_url.split('/')
+        if os.path.exists(f'{dir_image_real}{filename_in_db[-1]}'):
+            os.remove(os.path.join(dir_image_real, filename_in_db[-1]))
+
+    #delete movie
+    db.session.delete(message)
+    db.session.commit()
+    print('Message Deleted')
+
+    flash('Delete Message Successfully', 'success')
+
+    return redirect(url_for('admin_message.message'))
 
 
 def message_list():

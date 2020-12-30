@@ -11,9 +11,8 @@ from flask_wtf import Form
 from wtforms.fields.html5 import DateField
 from datetime import date, datetime
 
-from app.forms.form_studio import StudioForm
-from app.forms.form_ticket import TicketForm
-from app.forms.form_movies import MoviesForm
+from app.extensions._db import db
+#from app.forms.form_ticket import TicketForm
 from app.forms.form_booking_ticket import BookingTicketorm
 from app.models.model_payment_status import PaymentStatusModel
 from app.models.model_status import StatusModel
@@ -22,7 +21,7 @@ from app.models.model_users import UsersModel
 from app.models.model_movie import MovieModel, StudioModel, ScheduleModel
 from app.models.model_booking_ticket import BookingTicketModel
 from app.views.functions_plus import flash_login
-from app.extensions._db import db
+
 
 bp = Blueprint  ('ticket', __name__)
 
@@ -30,9 +29,9 @@ bp = Blueprint  ('ticket', __name__)
 @bp.route('/ticket/', methods=['GET', 'POST'])
 #@login_required
 def ticket():
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     message_ticket = message_ticket_list()
@@ -53,9 +52,9 @@ def ticket():
 @bp.route('/booking_ticket/', methods=['GET', 'POST'])
 #@login_required
 def booking_ticket():
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     message_ticket = message_ticket_list()
@@ -73,13 +72,33 @@ def booking_ticket():
         message_ticket=message_ticket, payment_status=payment_status, status=status)
 
 
+#Ticket Detile
+@bp.route('/delete_booking/<id>', methods=['GET', 'POST'])
+#@login_required
+def delete_booking(id):
+    #check auth
+    if not current_user.is_authenticated:
+        flash_login()
+        return redirect(url_for('auth.login'))
+
+    bticket = BookingTicketModel.query.get(id)
+    
+    #delete schedule
+    db.session.delete(bticket)
+    db.session.commit()
+    print('Booking Ticket Deleted')
+
+    flash('Delete Booking Ticket Successfully', 'success')
+    return redirect(url_for('ticket.booking_ticket'))
+
+
 #Select Seat
 @bp.route('/select_seat/<id>', methods=['GET', 'POST'])
 #@login_required
 def select_seat(id):
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     message_ticket = message_ticket_list()
@@ -138,9 +157,9 @@ def select_seat(id):
 @bp.route('/ticket_detile/<id>', methods=['GET', 'POST'])
 #@login_required
 def ticket_detile(id):
-    #set auth
+    #check auth
     if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
+        flash_login()
         return redirect(url_for('auth.login'))
 
     message_ticket = message_ticket_list()
@@ -160,23 +179,11 @@ def ticket_detile(id):
 
 
 def message_ticket_list():
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
     message_ticket = db.session.query(TicketModel, ScheduleModel, UsersModel, MovieModel). \
     select_from(TicketModel).order_by(TicketModel.ticket_added.desc()). \
     join(ScheduleModel).join(UsersModel).join(MovieModel).all()
-
     return message_ticket
 
 def message_stat():
-    #set auth
-    if not current_user.is_authenticated:
-        flash('Please login!', 'danger')
-        return redirect(url_for('auth.login'))
-
     status = StatusModel.query.all()
-
     return status

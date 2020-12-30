@@ -35,7 +35,7 @@
         <td>{{ x[0].message_type }}</td>
         <td>{{ message_status[x[0].message_status|int-1].status }}</td>
         <td>{{ x[0].message_send_time.strftime('%Y-%m-%d') }}</td>
-        <td><a href="/admin/message_detile/{{ x[0].id }}">Detile</a> | <a href="#/{{ x.id }}" onclick="return confirm('Are you sure to Delete message &quot;{{ x.id }}&quot; ?')">Delete</a></td>
+        <td><a href="/admin/message_detile/{{ x[0].id }}">Detile</a> | <a href="/admin/message_delete/{{ x[0].id }}" onclick="return confirm('Are you sure to Delete message &quot;{{ x[0].id }}&quot; ?')">Delete</a></td>
       </tr>
       {% endfor %}
     </tbody>

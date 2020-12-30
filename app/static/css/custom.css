@@ -11,9 +11,10 @@
 .smallBox::before
 {
   content:".";
-  width:15px;
-  height:15px;
+  width:20px;
+  height:20px;
   float:left;
+  padding-left:10px;
   margin-right:10px;
 }
 .greenBox::before
@@ -21,16 +22,16 @@
   content:"";
   background:Green;
 }
-.redBox::before
+.yellowBox::before
 {
   content:"";
-  background:Red;
+  background:#f7dc6f;
 }
 .emptyBox::before
 {
   content="";
   box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
-    background-color:#ccc;
+    background-color:#e5e8e8;
 }
 
 .seats
