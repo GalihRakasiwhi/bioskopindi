@@ -30,7 +30,7 @@
       {% for x in movies.items  %}
       <tr>
         <td>{{ x.id }}</td>
-        <td>{{ x.movie_title }} ({{x.movie_added.strftime('%Y')}})</td>
+        <td>{{ x.movie_title }} ({{x.movie_released.strftime('%Y')}})</td>
         <td>
           {{ x.movie_added.strftime('%Y-%m-%d') }}<br>{% if x.movie_edited != None %}{{ x.movie_edited.strftime('%Y-%m-%d') }} {% else %}Never Edited{% endif %}
         </td>

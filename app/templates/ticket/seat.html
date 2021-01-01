@@ -9,7 +9,7 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/custom.css') }}">
 <div class="container-fluid" align="center">
-    
+    {{ schedule[0][0].schedule_date }}
     <form method="POST" accept="/select_seat/{{ schedule[0][0].id }}">
     {% set column = 8 %}
     {% set row = 8 %}

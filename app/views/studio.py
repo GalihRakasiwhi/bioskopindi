@@ -29,6 +29,6 @@ def studio():
     status = message_stat()
     studio = StudioModel.query.all()
 
-    return render_template('#', message_ticket=message_ticket,
+    return render_template('/', message_ticket=message_ticket,
         status=status, studio=studio)
 

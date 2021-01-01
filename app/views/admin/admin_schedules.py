@@ -68,6 +68,7 @@ def add_schedule():
             schedule_studio_id = request.form['schedule_studio_id'],
             schedule_date = request.form['schedule_date'],
             schedule_time = request.form['schedule_time'],
+            schedule_price = request.form['schedule_price'],
             schedule_added = datetime.today()
         )
 

@@ -24,6 +24,7 @@
         <th>Studio Name</th>
         <th>Date</th>
         <th>Time</th>
+        <th>Price</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -35,6 +36,7 @@
         <td>{{ x[2].studio_name }}</td>
         <td>{{ x[0].schedule_date }}</td>
         <td>{{ x[0].schedule_time }}</td>
+        <td>{{ 'Rp {:,.0f}'.format(x[0].schedule_price) }}</td>
         <td><a href="edit_schedule/{{ x[0].id }}">Edit</a> | <a href="delete_schedule/{{ x[0].id }}" onclick="return confirm('Are you sure to Delete Schedule &quot;{{ x[0].id }}&quot; ?')">Delete</a></td>
       </tr>
       {% endfor %}
