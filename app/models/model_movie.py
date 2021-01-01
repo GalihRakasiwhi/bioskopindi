@@ -44,6 +44,7 @@ class ScheduleModel(db.Model):
     schedule_time = db.Column(db.Time, nullable=True)
     schedule_ticket = db.relationship('TicketModel', backref='tblSchedules', lazy=True)
     schedule_booking = db.relationship('BookingTicketModel', backref='tblSchedules', lazy=True)
+    schedule_price = db.Column(db.Float, nullable=False)
     schedule_added = db.Column(db.DateTime, nullable=False)
 
     def __repr(self):

@@ -128,7 +128,7 @@ def select_seat(id):
         join(StudioModel).all()
 
     if request.method == 'POST':
-        price = 10000 * len(request.form.getlist('seats'))
+        price = schedule[0][0].schedule_price * len(request.form.getlist('seats'))
 
         ticket_get = str(request.form.getlist('seats')). \
         replace("{", "").replace("}", ""). \
